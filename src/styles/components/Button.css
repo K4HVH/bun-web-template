@@ -3,6 +3,7 @@
    ============================================================================= */
 
 .button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +21,20 @@
   transition: all var(--g-transition);
   user-select: none;
   white-space: nowrap;
+  overflow: hidden;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 .button:focus-visible {
@@ -33,12 +48,12 @@
   color: var(--color-white);
 }
 
-.button--primary:hover:not(:disabled) {
-  background: var(--g-button-primary-hover);
+.button--primary:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.button--primary:active:not(:disabled) {
-  background: var(--g-button-primary-active);
+.button--primary:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .button--secondary {
@@ -49,11 +64,14 @@
 
 .button--secondary:hover:not(:disabled) {
   border-color: var(--g-border-color-emphasis);
-  background: var(--g-background-elevated);
 }
 
-.button--secondary:active:not(:disabled) {
-  background: var(--g-background);
+.button--secondary:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.button--secondary:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .button--subtle {
@@ -62,12 +80,15 @@
 }
 
 .button--subtle:hover:not(:disabled) {
-  background: var(--g-background-elevated);
   color: var(--g-text-primary);
 }
 
-.button--subtle:active:not(:disabled) {
-  background: var(--g-background);
+.button--subtle:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.button--subtle:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .button--danger {
@@ -75,12 +96,12 @@
   color: var(--color-white);
 }
 
-.button--danger:hover:not(:disabled) {
-  background: var(--g-button-danger-hover);
+.button--danger:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.button--danger:active:not(:disabled) {
-  background: var(--g-button-danger-active);
+.button--danger:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* Sizes */

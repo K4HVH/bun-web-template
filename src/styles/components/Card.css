@@ -3,11 +3,32 @@
    ============================================================================= */
 
 .card {
+  position: relative;
   background: var(--g-background);
   border: var(--g-border-width) solid var(--g-border-color);
   border-radius: var(--g-radius);
   padding: var(--g-spacing);
   transition: all var(--g-transition);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card > *:first-child {
@@ -41,12 +62,19 @@
 
 .card--interactive:hover {
   border-color: var(--g-border-color-emphasis);
-  background: var(--g-background-elevated);
   transform: translateY(-2px);
+}
+
+.card--interactive:hover::before {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .card--interactive:active {
   transform: translateY(0);
+}
+
+.card--interactive:active::before {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Accent Border */

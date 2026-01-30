@@ -152,11 +152,7 @@
 
   /* Button Gradients */
   --g-button-primary: linear-gradient(205deg, var(--color-blue-600), var(--color-blue-700));
-  --g-button-primary-hover: linear-gradient(205deg, var(--color-blue-500), var(--color-blue-600));
-  --g-button-primary-active: linear-gradient(205deg, var(--color-blue-700), var(--color-blue-800));
   --g-button-danger: linear-gradient(205deg, var(--color-red-600), var(--color-red-700));
-  --g-button-danger-hover: linear-gradient(205deg, var(--color-red-500), var(--color-red-600));
-  --g-button-danger-active: linear-gradient(205deg, var(--color-red-700), var(--color-red-800));
 }
 
 /* Reset & Base Styles */

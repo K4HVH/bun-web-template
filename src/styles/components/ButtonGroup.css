@@ -1,0 +1,64 @@
+/* =============================================================================
+   ButtonGroup Component
+   ============================================================================= */
+
+.button-group {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.button-group--vertical {
+  flex-direction: column;
+}
+
+/* Remove border radius from middle buttons */
+.button-group > .button {
+  border-radius: 0;
+}
+
+/* First button - keep left/top radius */
+.button-group > .button:first-child {
+  border-top-left-radius: var(--g-radius);
+  border-bottom-left-radius: var(--g-radius);
+}
+
+.button-group--vertical > .button:first-child {
+  border-top-left-radius: var(--g-radius);
+  border-top-right-radius: var(--g-radius);
+  border-bottom-left-radius: 0;
+}
+
+/* Last button - keep right/bottom radius */
+.button-group > .button:last-child {
+  border-top-right-radius: var(--g-radius);
+  border-bottom-right-radius: var(--g-radius);
+}
+
+.button-group--vertical > .button:last-child {
+  border-bottom-left-radius: var(--g-radius);
+  border-bottom-right-radius: var(--g-radius);
+  border-top-right-radius: 0;
+}
+
+/* Only child - keep all corners rounded */
+.button-group > .button:only-child {
+  border-radius: var(--g-radius);
+}
+
+/* Overlap borders to prevent doubling */
+.button-group > .button:not(:first-child) {
+  margin-left: calc(var(--g-border-width) * -1);
+}
+
+.button-group--vertical > .button:not(:first-child) {
+  margin-left: 0;
+  margin-top: calc(var(--g-border-width) * -1);
+}
+
+/* Bring button to front on hover/focus so border shows */
+.button-group > .button:hover,
+.button-group > .button:focus,
+.button-group > .button:active {
+  position: relative;
+  z-index: 1;
+}
