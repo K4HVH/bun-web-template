@@ -3,12 +3,20 @@ import { createSignal } from 'solid-js';
 import { GridBackground } from '../../components/GridBackground';
 import { Card, CardHeader } from '../../components/Card';
 import { Checkbox } from '../../components/Checkbox';
+import { Button } from '../../components/Button';
+import { Spinner } from '../../components/Spinner';
 import { getCSSVariable } from '../../utils/cssVariables';
 
 const Test: Component = () => {
   const [checked1, setChecked1] = createSignal(false);
   const [checked2, setChecked2] = createSignal(true);
   const [checked3, setChecked3] = createSignal(false);
+  const [loading, setLoading] = createSignal(false);
+
+  const handleLoadingClick = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
 
   return (
     <>
@@ -158,6 +166,100 @@ const Test: Component = () => {
               <Checkbox checked />
               <Checkbox indeterminate />
               <Checkbox size="compact" />
+            </div>
+          </Card>
+
+          <h2>Button Component Examples</h2>
+
+          <Card>
+            <CardHeader title="Button Variants" />
+            <div class="flex--sm flex--wrap">
+              <Button variant="primary">Primary Button</Button>
+              <Button variant="secondary">Secondary Button</Button>
+              <Button variant="subtle">Subtle Button</Button>
+              <Button variant="danger">Danger Button</Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Button Sizes" />
+            <div class="flex--sm flex--wrap">
+              <Button size="compact">Compact</Button>
+              <Button size="normal">Normal</Button>
+              <Button size="spacious">Spacious</Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Disabled Buttons" />
+            <div class="flex--sm flex--wrap">
+              <Button variant="primary" disabled>Disabled Primary</Button>
+              <Button variant="secondary" disabled>Disabled Secondary</Button>
+              <Button variant="subtle" disabled>Disabled Subtle</Button>
+              <Button variant="danger" disabled>Disabled Danger</Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Loading State" />
+            <div class="flex--sm flex--wrap">
+              <Button variant="primary" loading={loading()} onClick={handleLoadingClick}>
+                {loading() ? 'Loading...' : 'Click me'}
+              </Button>
+              <Button variant="secondary" loading>Loading Secondary</Button>
+              <Button variant="subtle" loading>Loading Subtle</Button>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Size + Variant Combinations" />
+            <div class="grid--sm">
+              <div class="flex--sm flex--wrap">
+                <Button variant="primary" size="compact">Compact Primary</Button>
+                <Button variant="secondary" size="compact">Compact Secondary</Button>
+                <Button variant="subtle" size="compact">Compact Subtle</Button>
+              </div>
+              <div class="flex--sm flex--wrap">
+                <Button variant="primary" size="spacious">Spacious Primary</Button>
+                <Button variant="secondary" size="spacious">Spacious Secondary</Button>
+                <Button variant="subtle" size="spacious">Spacious Subtle</Button>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Interactive Example" />
+            <div class="flex--sm flex--wrap">
+              <Button onClick={() => alert('Primary clicked!')}>Click me</Button>
+              <Button variant="secondary" onClick={() => console.log('Secondary clicked')}>
+                Log to console
+              </Button>
+              <Button variant="danger" onClick={() => confirm('Are you sure?')}>
+                Confirm action
+              </Button>
+            </div>
+          </Card>
+
+          <h2>Spinner Component Examples</h2>
+
+          <Card>
+            <CardHeader title="Spinner Sizes" />
+            <div class="flex--sm flex--wrap">
+              <Spinner size="sm" />
+              <Spinner size="normal" />
+              <Spinner size="lg" />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Colored Spinners" />
+            <div class="flex--sm flex--wrap">
+              <Spinner class="text-primary" />
+              <Spinner class="text-accent" />
+              <Spinner class="text-muted" />
+              <span style={{ color: 'var(--color-danger)' }}>
+                <Spinner />
+              </span>
             </div>
           </Card>
         </div>

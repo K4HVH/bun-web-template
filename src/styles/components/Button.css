@@ -1,0 +1,106 @@
+/* =============================================================================
+   Button Component
+   ============================================================================= */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--g-spacing-sm);
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  border: var(--g-border-width) solid transparent;
+  border-radius: var(--g-radius);
+  background: transparent;
+  color: var(--g-text-primary);
+  font-size: var(--g-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--g-line-height);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--g-transition);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Variants */
+.button--primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--color-accent);
+}
+
+.button--primary:active:not(:disabled) {
+  background: var(--color-blue-700);
+}
+
+.button--secondary {
+  border-color: var(--g-border-color);
+  background: var(--g-background);
+  color: var(--g-text-primary);
+}
+
+.button--secondary:hover:not(:disabled) {
+  border-color: var(--g-border-color-emphasis);
+  background: var(--g-background-elevated);
+}
+
+.button--secondary:active:not(:disabled) {
+  background: var(--g-background);
+}
+
+.button--subtle {
+  background: transparent;
+  color: var(--g-text-secondary);
+}
+
+.button--subtle:hover:not(:disabled) {
+  background: var(--g-background-elevated);
+  color: var(--g-text-primary);
+}
+
+.button--subtle:active:not(:disabled) {
+  background: var(--g-background);
+}
+
+.button--danger {
+  background: var(--color-danger);
+  color: var(--color-white);
+}
+
+.button--danger:hover:not(:disabled) {
+  background: var(--color-red-500);
+}
+
+.button--danger:active:not(:disabled) {
+  background: var(--color-red-700);
+}
+
+/* Sizes */
+.button--compact {
+  padding: var(--g-spacing-xs) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+  gap: var(--g-spacing-xs);
+}
+
+.button--spacious {
+  padding: var(--g-spacing) var(--g-spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+/* States */
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button--loading {
+  cursor: wait;
+}

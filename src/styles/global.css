@@ -30,12 +30,22 @@
   --color-blue-400: #3399ff;  /* Light blue */
   --color-blue-300: #66b3ff;  /* Lighter blue */
 
+  /* Red Scale */
+  --color-red-900: #4a0000;  /* Very dark red */
+  --color-red-800: #660000;  /* Dark red */
+  --color-red-700: #8b0000;  /* Deep red */
+  --color-red-600: #b30000;  /* Standard red */
+  --color-red-500: #dc2626;  /* Bright red */
+  --color-red-400: #ef4444;  /* Light red */
+  --color-red-300: #f87171;  /* Lighter red */
+
   /* Semantic Colors */
   --color-primary: var(--color-blue-600);      /* Main interaction color */
   --color-secondary: var(--color-blue-800);    /* Secondary elements */
   --color-tertiary: var(--color-gray-600);     /* Tertiary elements */
   --color-accent: var(--color-blue-500);       /* Highlight/accent color */
   --color-muted: var(--color-gray-400);        /* Muted text/elements */
+  --color-danger: var(--color-red-600);        /* Danger/destructive color */
 
   /* Spacing Scale (4px base unit) */
   --spacing-1: 4px;
@@ -374,20 +384,25 @@ hr {
 }
 
 .grid--sm {
+  display: grid;
   gap: var(--g-spacing-sm);
 }
 
 .grid--md {
+  display: grid;
   gap: var(--g-spacing);
 }
 
 /* Flex Layouts */
 .flex {
   display: flex;
+  align-items: center;
   gap: var(--g-spacing);
 }
 
 .flex--sm {
+  display: flex;
+  align-items: center;
   gap: var(--g-spacing-sm);
 }
 
