@@ -1,39 +1,62 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('App', () => {
-  test('should load the homepage', async ({ page }) => {
+test.describe('Design System Test Page', () => {
+  test('should load the test page', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: /home page/i })).toBeVisible();
-    await expect(page.getByText('Welcome to your SolidJS application!')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Design System Test Page' })).toBeVisible();
   });
 
-  test('has title', async ({ page }) => {
+  test('has correct title', async ({ page }) => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Solid App/);
   });
 
-  test('navigates to about page', async ({ page }) => {
+  test('displays typography section', async ({ page }) => {
     await page.goto('/');
 
-    await page.click('text=Go to About');
-    await expect(page.getByRole('heading', { name: /about page/i })).toBeVisible();
-    await expect(page).toHaveURL(/\/about/);
+    await expect(page.getByRole('heading', { name: 'Typography Examples' })).toBeVisible();
   });
 
-  test('navigates back to home from about', async ({ page }) => {
-    await page.goto('/about');
+  test('displays card component examples', async ({ page }) => {
+    await page.goto('/');
 
-    await page.click('text=Go to Home');
-    await expect(page.getByRole('heading', { name: /home page/i })).toBeVisible();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByRole('heading', { name: 'Card Component Examples' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Default Card' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Emphasized Card' })).toBeVisible();
   });
 
-  test('shows 404 page for unknown routes', async ({ page }) => {
-    await page.goto('/nonexistent');
+  test('displays checkbox component examples', async ({ page }) => {
+    await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: /404/i })).toBeVisible();
-    await expect(page.getByText(/page you're looking for doesn't exist/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Checkbox Component Examples' })).toBeVisible();
+    await expect(page.getByText('Basic Checkboxes')).toBeVisible();
+  });
+
+  test('displays button component examples', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.getByRole('heading', { name: 'Button Component Examples' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Primary Button' })).toBeVisible();
+  });
+
+  test('interactive button works', async ({ page }) => {
+    await page.goto('/');
+
+    // Find the specific "Click me" button in the Interactive Example section
+    const button = page.getByRole('button', { name: 'Click me', exact: true }).first();
+    await button.scrollIntoViewIfNeeded();
+
+    // Setup dialog handler
+    page.on('dialog', dialog => dialog.accept());
+
+    await button.click();
+  });
+
+  test('displays combobox examples', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page.getByRole('heading', { name: 'Combobox Examples' })).toBeVisible();
   });
 });

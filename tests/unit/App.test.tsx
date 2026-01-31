@@ -3,18 +3,21 @@ import { describe, it, expect } from 'vitest';
 import App from '../../src/app/App';
 
 describe('App', () => {
-  it('renders home page by default', () => {
+  it('renders the design system test page', () => {
     const { getByText } = render(() => <App />);
-    expect(getByText('Home Page')).toBeInTheDocument();
+    expect(getByText('Design System Test Page')).toBeInTheDocument();
   });
 
-  it('renders welcome message', () => {
+  it('renders typography section', () => {
     const { getByText } = render(() => <App />);
-    expect(getByText('Welcome to your SolidJS application!')).toBeInTheDocument();
+    expect(getByText('Typography Examples')).toBeInTheDocument();
   });
 
-  it('renders the child component on home', () => {
+  it('renders component sections', () => {
     const { getByText } = render(() => <App />);
-    expect(getByText('Child component')).toBeInTheDocument();
+    expect(getByText('Card Component Examples')).toBeInTheDocument();
+    expect(getByText('Checkbox Component Examples')).toBeInTheDocument();
+    expect(getByText('Button Component Examples')).toBeInTheDocument();
+    expect(getByText('Combobox Examples')).toBeInTheDocument();
   });
 });

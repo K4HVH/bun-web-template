@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: [['html', { outputFolder: 'tests/.output/report' }]],
   outputDir: 'tests/.output/results',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://127.0.0.1:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -30,8 +30,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'bun run dev',
-    url: 'http://localhost:3000',
+    command: 'bun run dev --host 127.0.0.1',
+    url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
+    timeout: 120000,
   },
 });

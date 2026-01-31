@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Button sizing consistency', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto('/');
   });
 
   test('icon-only buttons should match height of text buttons', async ({ page }) => {
