@@ -37,6 +37,33 @@ bun run serve              # Preview build with Vite
 bun run serve:prod         # Preview with native Bun server
 ```
 
+## Git Workflow Rules
+
+**CRITICAL**: Never execute git commands that modify state or affect remote without explicit user permission:
+
+### ❌ NEVER run without permission:
+- `git add` / `git stage` - Staging changes
+- `git commit` - Creating commits
+- `git push` - Pushing to remote
+- `git reset --hard` - Destructive resets
+- `git checkout .` - Discarding changes
+- `git clean -f` - Deleting untracked files
+- `git rebase` - Rebasing commits
+- `git merge` - Merging branches
+- `git branch -D` - Force deleting branches
+- `git push --force` - Force pushing
+- Any other destructive or state-modifying operations
+
+### ✅ Safe to run:
+- `git status` - Check repository status
+- `git log` - View commit history
+- `git diff` - View changes
+- `git show` - Show commit details
+- `git branch` (without -D) - List branches
+- `git remote -v` - List remotes
+
+**Workflow**: Complete all work, verify tests pass, then ASK the user if they want to stage/commit changes. Provide a suggested commit message but let the user execute the commands.
+
 ## Component Architecture
 
 ### Component Organization

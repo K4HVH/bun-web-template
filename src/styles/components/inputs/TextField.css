@@ -1,0 +1,204 @@
+/* =============================================================================
+   TextField Component
+   ============================================================================= */
+
+.textfield {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  width: 100%;
+}
+
+/* Label */
+.textfield__label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--g-text-secondary);
+  margin-bottom: 0;
+}
+
+/* Input wrapper */
+.textfield__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--g-background);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  transition: all var(--g-transition);
+  overflow: hidden;
+}
+
+.textfield__wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Hover state */
+.textfield:not(.textfield--disabled) .textfield__wrapper:hover {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.textfield:not(.textfield--disabled) .textfield__wrapper:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Don't apply hover when hovering over interactive prefix/suffix */
+.textfield__wrapper:has(.textfield__prefix:hover .combobox),
+.textfield__wrapper:has(.textfield__suffix:hover .combobox) {
+  border-color: var(--g-border-color);
+}
+
+.textfield__wrapper:has(.textfield__prefix:hover .combobox)::before,
+.textfield__wrapper:has(.textfield__suffix:hover .combobox)::before {
+  background: rgba(255, 255, 255, 0);
+}
+
+/* Focus state */
+.textfield:not(.textfield--disabled) .textfield__wrapper:has(.textfield__input:focus) {
+  border-color: var(--color-primary);
+}
+
+/* Disabled state */
+.textfield--disabled .textfield__wrapper {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Input field */
+.textfield__input {
+  flex: 1;
+  padding: var(--g-spacing-sm) var(--g-spacing);
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--g-text-secondary);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  width: 100%;
+  min-width: 0;
+}
+
+.textfield__input::placeholder {
+  color: var(--g-text-muted);
+}
+
+.textfield__input:disabled {
+  cursor: not-allowed;
+}
+
+/* Hide number input spinners */
+.textfield__input[type="number"]::-webkit-inner-spin-button,
+.textfield__input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.textfield__input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Compact size */
+.textfield--compact .textfield__input {
+  padding: var(--spacing-1) var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Input with prefix */
+.textfield__input--with-prefix {
+  padding-left: 0;
+}
+
+/* Input with suffix */
+.textfield__input--with-suffix {
+  padding-right: 0;
+}
+
+/* Prefix and suffix */
+.textfield__prefix,
+.textfield__suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--g-spacing);
+  color: var(--g-text-muted);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.textfield--compact .textfield__prefix,
+.textfield--compact .textfield__suffix {
+  padding: 0 var(--g-spacing-sm);
+  font-size: var(--font-size-xs);
+}
+
+/* Adjust styling when prefix/suffix contains interactive components */
+.textfield__prefix:has(.combobox),
+.textfield__suffix:has(.combobox) {
+  padding: 0 var(--spacing-1);
+}
+
+.textfield__prefix .combobox__trigger,
+.textfield__suffix .combobox__trigger {
+  min-width: auto;
+  width: auto;
+}
+
+/* Suffix container */
+.textfield__suffix-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  flex-shrink: 0;
+}
+
+/* Clear button */
+.textfield__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-1);
+  margin: 0;
+  background: none;
+  border: none;
+  color: var(--g-text-muted);
+  cursor: pointer;
+  font-size: 1.5em;
+  line-height: 1;
+  transition: color var(--g-transition);
+  flex-shrink: 0;
+}
+
+.textfield__clear:hover {
+  color: var(--g-text-secondary);
+}
+
+.textfield__clear:active {
+  transform: scale(0.95);
+}
+
+/* Character count */
+.textfield__count {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--g-spacing);
+  color: var(--g-text-muted);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.textfield--compact .textfield__count {
+  padding: 0 var(--g-spacing-sm);
+}
