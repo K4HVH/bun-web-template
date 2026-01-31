@@ -57,6 +57,6 @@ test.describe('Design System Test Page', () => {
   test('displays combobox examples', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: 'Combobox Examples' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Combobox Examples', exact: true })).toBeVisible();
   });
 });
