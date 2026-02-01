@@ -1,0 +1,204 @@
+/* =============================================================================
+   Avatar Component
+   ============================================================================= */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  user-select: none;
+  transition: all var(--g-transition);
+  cursor: default;
+}
+
+/* ::before pseudo-element for hover effects */
+.avatar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Default Size - Normal (40px) */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+}
+
+/* Size Variants */
+.avatar--compact {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar--spacious {
+  width: 48px;
+  height: 48px;
+}
+
+/* Shape Variants */
+.avatar--square {
+  border-radius: var(--g-radius);
+}
+
+/* Interactive */
+.avatar--interactive {
+  cursor: pointer;
+}
+
+.avatar--interactive:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Disabled State */
+.avatar--interactive:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Reset (when avatar is interactive) */
+button.avatar {
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Avatar Image */
+.avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Avatar Initials */
+.avatar__initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: var(--font-weight-medium);
+  user-select: none;
+}
+
+/* Initials font sizes based on avatar size */
+.avatar--compact .avatar__initials {
+  font-size: 12px;
+}
+
+.avatar .avatar__initials {
+  font-size: 14px;
+}
+
+.avatar--spacious .avatar__initials {
+  font-size: 16px;
+}
+
+/* Avatar Icon */
+.avatar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+/* Icon sizes based on avatar size */
+.avatar--compact .avatar__icon {
+  font-size: 16px;
+}
+
+.avatar .avatar__icon {
+  font-size: 20px;
+}
+
+.avatar--spacious .avatar__icon {
+  font-size: 24px;
+}
+
+/* Variants */
+
+/* Primary */
+.avatar--primary {
+  background: var(--g-button-primary);
+  color: var(--color-white);
+}
+
+.avatar--primary .avatar__initials,
+.avatar--primary .avatar__icon {
+  background: transparent;
+  color: var(--color-white);
+}
+
+.avatar--primary.avatar--interactive:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar--primary.avatar--interactive:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary */
+.avatar--secondary {
+  border-color: var(--g-border-color);
+  background: var(--g-background);
+}
+
+.avatar--secondary .avatar__initials,
+.avatar--secondary .avatar__icon {
+  background: var(--g-background);
+  color: var(--g-text-primary);
+}
+
+.avatar--secondary.avatar--interactive:hover:not(:disabled) {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.avatar--secondary.avatar--interactive:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.avatar--secondary.avatar--interactive:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle */
+.avatar--subtle {
+  background: transparent;
+  border-color: transparent;
+}
+
+.avatar--subtle .avatar__initials,
+.avatar--subtle .avatar__icon {
+  background: transparent;
+  color: var(--g-text-secondary);
+}
+
+.avatar--subtle.avatar--interactive:hover:not(:disabled) .avatar__initials,
+.avatar--subtle.avatar--interactive:hover:not(:disabled) .avatar__icon {
+  color: var(--g-text-primary);
+}
+
+.avatar--subtle.avatar--interactive:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.avatar--subtle.avatar--interactive:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
