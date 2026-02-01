@@ -15,6 +15,7 @@ import { useNotification } from '../../components/feedback/Notification';
 import { Tooltip } from '../../components/display/Tooltip';
 import { Badge } from '../../components/display/Badge';
 import { Avatar } from '../../components/display/Avatar';
+import { AvatarGroup } from '../../components/display/AvatarGroup';
 import { getCSSVariable } from '../../utils/cssVariables';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill, BsStar, BsStarFill, BsPlus, BsTrash, BsPencil, BsDownload, BsUpload, BsGear, BsCircle, BsCircleFill, BsSquare, BsTriangle, BsSearch, BsEnvelope, BsInfoCircle, BsQuestionCircle, BsCheck, BsBell, BsFire, BsLightning, BsPerson } from 'solid-icons/bs';
 
@@ -2165,22 +2166,132 @@ const Test: Component = () => {
           </Card>
 
           <Card>
-            <CardHeader title="Avatar Group" subtitle="Multiple avatars displayed together" />
-            <div class="flex--sm" style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-              <div style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-                <Avatar src="https://i.pravatar.cc/150?img=8" />
+            <CardHeader title="Avatar Group" subtitle="Overlapping avatars with automatic spacing" />
+            <div class="grid--sm">
+              <div>
+                <h4>Default</h4>
+                <AvatarGroup>
+                  <Avatar src="https://i.pravatar.cc/150?img=8" />
+                  <Avatar name="John Doe" />
+                  <Avatar name="Sarah Smith" />
+                  <Avatar name="Mike Johnson" />
+                  <Avatar name="Emily Brown" />
+                </AvatarGroup>
               </div>
-              <div style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-                <Avatar name="John Doe" />
+              <div>
+                <h4>With Max Count</h4>
+                <AvatarGroup max={3}>
+                  <Avatar src="https://i.pravatar.cc/150?img=8" />
+                  <Avatar name="John Doe" />
+                  <Avatar name="Sarah Smith" />
+                  <Avatar name="Mike Johnson" />
+                  <Avatar name="Emily Brown" />
+                  <Avatar name="David Wilson" />
+                  <Avatar name="Lisa Anderson" />
+                </AvatarGroup>
               </div>
-              <div style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-                <Avatar name="Sarah Smith" />
+              <div>
+                <h4>Compact Size</h4>
+                <AvatarGroup size="compact">
+                  <Avatar src="https://i.pravatar.cc/150?img=9" />
+                  <Avatar name="AB" />
+                  <Avatar name="CD" />
+                  <Avatar name="EF" />
+                </AvatarGroup>
               </div>
-              <div style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-                <Avatar name="Mike Johnson" />
+              <div>
+                <h4>Spacious Size</h4>
+                <AvatarGroup size="spacious">
+                  <Avatar src="https://i.pravatar.cc/150?img=10" />
+                  <Avatar name="XY" />
+                  <Avatar name="ZW" />
+                </AvatarGroup>
               </div>
-              <div style={{ "margin-left": "calc(var(--g-spacing) * -0.5)" }}>
-                <Avatar initials="+5" />
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Avatar Group Spacing" subtitle="Control overlap with spacing variants" />
+            <div class="grid--sm">
+              <div>
+                <h4>Tight Spacing</h4>
+                <AvatarGroup spacing="tight">
+                  <Avatar src="https://i.pravatar.cc/150?img=11" />
+                  <Avatar name="John Doe" />
+                  <Avatar name="Sarah Smith" />
+                  <Avatar name="Mike Johnson" />
+                </AvatarGroup>
+              </div>
+              <div>
+                <h4>Normal Spacing</h4>
+                <AvatarGroup spacing="normal">
+                  <Avatar src="https://i.pravatar.cc/150?img=12" />
+                  <Avatar name="John Doe" />
+                  <Avatar name="Sarah Smith" />
+                  <Avatar name="Mike Johnson" />
+                </AvatarGroup>
+              </div>
+              <div>
+                <h4>Loose Spacing</h4>
+                <AvatarGroup spacing="loose">
+                  <Avatar src="https://i.pravatar.cc/150?img=13" />
+                  <Avatar name="John Doe" />
+                  <Avatar name="Sarah Smith" />
+                  <Avatar name="Mike Johnson" />
+                </AvatarGroup>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHeader title="Interactive Avatar Groups" subtitle="Hover for animation, click avatars for interaction" />
+            <div class="grid--sm">
+              <div>
+                <h4>Clickable Avatars</h4>
+                <AvatarGroup>
+                  <Avatar
+                    src="https://i.pravatar.cc/150?img=14"
+                    alt="John Doe"
+                    onClick={() => notify({ title: 'Avatar clicked!', message: 'John Doe' })}
+                  />
+                  <Avatar
+                    name="Sarah Smith"
+                    onClick={() => notify({ title: 'Avatar clicked!', message: 'Sarah Smith' })}
+                  />
+                  <Avatar
+                    name="Mike Johnson"
+                    onClick={() => notify({ title: 'Avatar clicked!', message: 'Mike Johnson' })}
+                  />
+                  <Avatar
+                    name="Emily Brown"
+                    onClick={() => notify({ title: 'Avatar clicked!', message: 'Emily Brown' })}
+                  />
+                </AvatarGroup>
+              </div>
+              <div>
+                <h4>Interactive Overflow</h4>
+                <AvatarGroup
+                  max={3}
+                  onOverflowClick={() => notify({ title: 'Overflow clicked!', message: 'Show all 7 members' })}
+                >
+                  <Avatar name="Alice" onClick={() => notify({ title: 'Alice' })} />
+                  <Avatar name="Bob" onClick={() => notify({ title: 'Bob' })} />
+                  <Avatar name="Charlie" onClick={() => notify({ title: 'Charlie' })} />
+                  <Avatar name="David" />
+                  <Avatar name="Emily" />
+                  <Avatar name="Frank" />
+                  <Avatar name="Grace" />
+                </AvatarGroup>
+              </div>
+              <div>
+                <h4>Mixed Interactive States</h4>
+                <AvatarGroup spacing="normal">
+                  <Avatar src="https://i.pravatar.cc/150?img=15" onClick={() => notify({ title: 'User 1' })} />
+                  <Avatar name="User 2" />
+                  <Avatar name="User 3" onClick={() => notify({ title: 'User 3' })} />
+                  <Avatar name="User 4" />
+                  <Avatar name="User 5" onClick={() => notify({ title: 'User 5' })} />
+                </AvatarGroup>
               </div>
             </div>
           </Card>

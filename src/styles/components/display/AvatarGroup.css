@@ -1,0 +1,79 @@
+/* =============================================================================
+   AvatarGroup Component
+   ============================================================================= */
+
+.avatar-group {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Avatar items overlap with negative margin */
+.avatar-group__item {
+  position: relative;
+  display: inline-flex;
+}
+
+.avatar-group__item:not(:first-child) {
+  margin-left: -8px;
+}
+
+/* Add ring around avatars for separation */
+.avatar-group__item .avatar {
+  box-shadow: 0 0 0 2px var(--g-background);
+}
+
+/* Spacing variants */
+.avatar-group--spacing-tight .avatar-group__item:not(:first-child) {
+  margin-left: -12px;
+}
+
+.avatar-group--spacing-normal .avatar-group__item:not(:first-child) {
+  margin-left: -8px;
+}
+
+.avatar-group--spacing-loose .avatar-group__item:not(:first-child) {
+  margin-left: -4px;
+}
+
+/* Size-specific spacing adjustments */
+.avatar-group--compact .avatar-group__item:not(:first-child) {
+  margin-left: -6px;
+}
+
+.avatar-group--compact.avatar-group--spacing-tight .avatar-group__item:not(:first-child) {
+  margin-left: -10px;
+}
+
+.avatar-group--compact.avatar-group--spacing-loose .avatar-group__item:not(:first-child) {
+  margin-left: -3px;
+}
+
+.avatar-group--spacious .avatar-group__item:not(:first-child) {
+  margin-left: -10px;
+}
+
+.avatar-group--spacious.avatar-group--spacing-tight .avatar-group__item:not(:first-child) {
+  margin-left: -14px;
+}
+
+.avatar-group--spacious.avatar-group--spacing-loose .avatar-group__item:not(:first-child) {
+  margin-left: -6px;
+}
+
+/* Z-index stacking - later avatars behind earlier ones */
+.avatar-group__item:nth-child(1) { z-index: 10; }
+.avatar-group__item:nth-child(2) { z-index: 9; }
+.avatar-group__item:nth-child(3) { z-index: 8; }
+.avatar-group__item:nth-child(4) { z-index: 7; }
+.avatar-group__item:nth-child(5) { z-index: 6; }
+.avatar-group__item:nth-child(6) { z-index: 5; }
+.avatar-group__item:nth-child(7) { z-index: 4; }
+.avatar-group__item:nth-child(8) { z-index: 3; }
+.avatar-group__item:nth-child(9) { z-index: 2; }
+.avatar-group__item:nth-child(10) { z-index: 1; }
+
+/* Hover brings avatar to front */
+.avatar-group__item:hover {
+  z-index: 20 !important;
+}
