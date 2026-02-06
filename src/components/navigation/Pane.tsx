@@ -1,4 +1,5 @@
-import { Component, JSX, Show, createSignal, createEffect, onCleanup, splitProps } from 'solid-js';
+import { Component, JSX, Show, createSignal, createEffect, createMemo, onCleanup, splitProps } from 'solid-js';
+import { Dynamic } from 'solid-js/web';
 import { BsChevronLeft, BsChevronRight, BsChevronUp, BsChevronDown } from 'solid-icons/bs';
 import '../../styles/components/navigation/Pane.css';
 
@@ -126,21 +127,16 @@ export const Pane: Component<PaneProps> = (props) => {
     }
   });
 
-  // Chevron icon — points outward when closed/partial, inward when open
-  const HandleIcon = () => {
-    const pos = position();
-    const pointsInward = currentState() === 'open';
-
-    if (pos === 'left') {
-      return pointsInward ? <BsChevronLeft /> : <BsChevronRight />;
-    } else if (pos === 'right') {
-      return pointsInward ? <BsChevronRight /> : <BsChevronLeft />;
-    } else if (pos === 'top') {
-      return pointsInward ? <BsChevronUp /> : <BsChevronDown />;
-    } else {
-      return pointsInward ? <BsChevronDown /> : <BsChevronUp />;
+  // Base chevron icon per position — points outward (toward opening direction).
+  // Rotated 180deg via CSS when open to point inward (toward closing).
+  const baseIcon = createMemo(() => {
+    switch (position()) {
+      case 'left': return BsChevronRight;
+      case 'right': return BsChevronLeft;
+      case 'top': return BsChevronDown;
+      default: return BsChevronUp;
     }
-  };
+  });
 
   // CSS custom properties for sizing
   const paneStyle = (): JSX.CSSProperties => ({
@@ -221,7 +217,12 @@ export const Pane: Component<PaneProps> = (props) => {
             onClick={cycleState}
             aria-label={handleLabel()}
           >
-            <HandleIcon />
+            <span
+              class="pane__handle-icon"
+              classList={{ 'pane__handle-icon--rotated': currentState() === 'open' }}
+            >
+              <Dynamic component={baseIcon()} />
+            </span>
           </button>
         </Show>
       </div>

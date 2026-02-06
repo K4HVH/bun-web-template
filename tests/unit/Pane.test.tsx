@@ -351,6 +351,45 @@ describe('Pane', () => {
   });
 
   // =========================================================================
+  // Handle Icon Rotation
+  // =========================================================================
+
+  it('handle icon is not rotated when closed', () => {
+    const { container } = render(() => <Pane>Content</Pane>);
+    const icon = container.querySelector('.pane__handle-icon');
+    expect(icon).toBeInTheDocument();
+    expect(icon?.classList.contains('pane__handle-icon--rotated')).toBe(false);
+  });
+
+  it('handle icon rotates when open', () => {
+    const { container } = render(() => <Pane defaultState="open">Content</Pane>);
+    const icon = container.querySelector('.pane__handle-icon');
+    expect(icon?.classList.contains('pane__handle-icon--rotated')).toBe(true);
+  });
+
+  it('handle icon is not rotated when partial', () => {
+    const { container } = render(() => (
+      <Pane defaultState="partial" partialChildren={<div>Partial</div>}>Content</Pane>
+    ));
+    const icon = container.querySelector('.pane__handle-icon');
+    expect(icon?.classList.contains('pane__handle-icon--rotated')).toBe(false);
+  });
+
+  it('handle icon rotation updates on state change', () => {
+    const { container } = render(() => <Pane>Content</Pane>);
+    const handle = container.querySelector('.pane__handle') as HTMLButtonElement;
+    const icon = container.querySelector('.pane__handle-icon')!;
+
+    // closed → open
+    fireEvent.click(handle);
+    expect(icon.classList.contains('pane__handle-icon--rotated')).toBe(true);
+
+    // open → closed
+    fireEvent.click(handle);
+    expect(icon.classList.contains('pane__handle-icon--rotated')).toBe(false);
+  });
+
+  // =========================================================================
   // ARIA
   // =========================================================================
 
