@@ -1,218 +1,220 @@
-# SolidJS + Vite + Bun
+# Homepage v2
 
-A high-performance SolidJS application scaffold using Vite for build tooling and Bun as the runtime and package manager.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 17 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
-## Tech Stack
+## Features
 
-- **SolidJS** - Fine-grained reactive UI framework
-- **@solidjs/router** - Client-side routing
-- **Vite** - Fast build tool with HMR
-- **Bun** - Fast JavaScript runtime and package manager
-- **TypeScript** - Type safety
-- **Vitest** - Unit/component testing
-- **Playwright** - End-to-end testing
+- **17 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
+- **Unit testing** with Vitest and @solidjs/testing-library
+- **E2E testing** with Playwright across Chromium, Firefox, and WebKit
+- **Docker deployment** with multi-stage builds and native Bun server
+- **CI/CD** with GitHub Actions (multi-architecture Docker images for amd64 and arm64)
 
-## Getting Started
+## Quick Start
 
-### Install Dependencies
+### Prerequisites
+
+- [Bun](https://bun.sh) (runtime and package manager)
+
+### Install
 
 ```bash
 bun install
 ```
 
-### Install Playwright Browsers
-
-Install browsers for end-to-end testing:
-
-```bash
-bunx playwright install chromium firefox webkit
-```
-
-### Development
-
-Runs the app in development mode with hot module replacement:
+### Start Development Server
 
 ```bash
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000) to view the component showcase.
 
-### Build
+## Component Library
 
-Builds the app for production to the `dist` folder:
+### Inputs
 
-```bash
-bun run build
-```
+Interactive form controls and user input components.
 
-The build is minified and optimized for best performance.
+| Component | Description |
+|-----------|-------------|
+| **Button** | Primary, secondary, subtle, and danger variants |
+| **ButtonGroup** | Groups buttons horizontally or vertically |
+| **Checkbox** | Checkbox with custom icon support |
+| **Combobox** | Dropdown select with Portal rendering (single and multi-select) |
+| **RadioGroup** | Radio button groups with horizontal/vertical layout |
+| **Slider** | Single and range sliders with marks and tooltips |
+| **Spinner** | Loading indicators |
+| **TextField** | Text input field |
 
-### Preview Production Build
+### Display
 
-Preview the production build locally with Vite's preview server:
+Components for presenting information.
 
-```bash
-bun run serve
-```
+| Component | Description |
+|-----------|-------------|
+| **Avatar** | User avatar display |
+| **AvatarGroup** | Grouped avatar display with overlap |
+| **Badge** | Status and label badges |
+| **Tooltip** | Hover tooltips for contextual information |
 
-Or use the native Bun server (same as Docker):
+### Feedback
 
-```bash
-bun run serve:prod
-```
+User feedback and dialog components.
+
+| Component | Description |
+|-----------|-------------|
+| **Dialog** | Modal dialog overlay |
+| **Notification** | Toast notifications with provider context |
+
+### Surfaces
+
+Layout containers and background elements.
+
+| Component | Description |
+|-----------|-------------|
+| **Card** | Container with emphasized and subtle variants |
+| **GridBackground** | Animated canvas grid background |
+
+### Navigation
+
+Page layout and navigation components.
+
+| Component | Description |
+|-----------|-------------|
+| **Pane** | Collapsible side/top/bottom panel |
 
 ## Project Structure
 
 ```
 src/
-├── index.html              # HTML entry point
-├── index.tsx              # JavaScript entry point
-└── app/
-    ├── App.tsx            # Router setup
-    ├── Comp.tsx           # Example component
-    └── pages/             # Route pages
-        ├── Home.tsx       # Home page (/)
-        ├── About.tsx      # About page (/about)
-        └── NotFound.tsx   # 404 page
+├── index.html                  # HTML entry point
+├── index.tsx                   # JavaScript entry point
+├── app/
+│   ├── App.tsx                 # Router setup with NotificationProvider
+│   └── pages/
+│       └── Test.tsx            # Component showcase page (/)
+├── components/
+│   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
+│   ├── display/                # Avatar, Badge, Tooltip, etc.
+│   ├── feedback/               # Dialog, Notification
+│   ├── surfaces/               # Card, GridBackground
+│   └── navigation/             # Pane
+├── styles/
+│   ├── global.css              # Theme tokens and global styles
+│   └── components/             # Per-component CSS files
+└── utils/
+    └── cssVariables.ts         # CSS variable utilities
+
+tests/
+├── unit/                       # Vitest component tests
+└── e2e/                        # Playwright browser tests
+
+serve.ts                        # Native Bun production server
+Dockerfile                      # Multi-stage Docker build
+scripts/
+└── playwright-fedora-fix.sh    # Playwright dependency fix for Fedora
 ```
 
-## Routing
+## Development
 
-The app uses `@solidjs/router` for client-side routing. Routes are defined in `src/app/App.tsx`:
+### Commands
 
-```tsx
-<Router>
-  <Route path="/" component={Home} />
-  <Route path="/about" component={About} />
-  <Route path="*" component={NotFound} />
-</Router>
-```
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start dev server with HMR |
+| `bun run build` | Production build to `dist/` |
+| `bun run serve` | Preview build with Vite |
+| `bun run serve:prod` | Preview with native Bun server |
 
-Add new routes by creating page components in `src/app/pages/` and adding them to the Router.
+### Testing
 
-Navigate between pages using the `<A>` component:
+**Important:** Use `bun run test`, not `bun test` (the latter runs Bun's built-in test runner instead of Vitest).
 
-```tsx
-import { A } from '@solidjs/router';
+| Command | Description |
+|---------|-------------|
+| `bun run test` | Run all tests (unit + e2e) |
+| `bun run test:unit` | Run unit tests only |
+| `bun run test:unit:watch` | Unit tests in watch mode |
+| `bun run test:unit:ui` | Unit tests with Vitest UI |
+| `bun run test:e2e` | Run e2e tests (auto-starts dev server) |
+| `bun run test:e2e:ui` | E2E tests with Playwright UI |
+| `bun run test:e2e:headed` | E2E tests in headed browser mode |
 
-<A href="/about">Go to About</A>
-```
-
-## Testing
-
-### Run All Tests
-
-Run both unit and e2e tests:
+Install Playwright browsers before running e2e tests:
 
 ```bash
-bun run test
+bunx playwright install chromium firefox webkit
 ```
 
-**Note:** Use `bun run test`, not `bun test`. The latter runs Bun's built-in test runner.
-
-### Unit Tests (Vitest)
-
-Run unit tests:
+### Type Checking
 
 ```bash
-bun run test:unit
+bunx tsc --noEmit
 ```
 
-Watch mode for development:
+## Fedora Development
+
+If running Playwright on Fedora, use the included fix script to install required system dependencies:
 
 ```bash
-bun run test:unit:watch
+bash scripts/playwright-fedora-fix.sh
 ```
 
-UI mode for debugging:
+## Build & Deployment
+
+### Docker
+
+The project uses a multi-stage Docker build:
+
+1. **Builder stage** (`oven/bun:1-debian`) -- installs dependencies and builds the Vite production bundle
+2. **Runner stage** (`oven/bun:1-alpine`) -- serves static files with a native Bun server (`serve.ts`), running as a non-root user
 
 ```bash
-bun run test:unit:ui
-```
-
-Unit tests are located in `tests/unit/` and use Vitest with SolidJS Testing Library.
-
-### E2E Tests (Playwright)
-
-Run e2e tests across all browsers (Chromium, Firefox, WebKit):
-
-```bash
-bun run test:e2e
-```
-
-UI mode for debugging:
-
-```bash
-bun run test:e2e:ui
-```
-
-Headed mode (see browser):
-
-```bash
-bun run test:e2e:headed
-```
-
-E2E tests are located in `tests/e2e/` and automatically start the dev server. Test results and reports are saved in `tests/.output/` (git-ignored).
-
-## Docker
-
-The Docker image uses **native Bun** to serve static files (no nginx or extra dependencies needed). The production server is defined in `serve.ts`.
-
-### Building Locally
-
-Build for your current architecture:
-
-```bash
+# Build the image
 docker build -t homepage-v2 .
-```
 
-Run the container:
-
-```bash
+# Run on port 3000
 docker run -p 3000:3000 homepage-v2
 ```
 
-### Multi-Architecture Builds
+### CI/CD
 
-The project supports native multi-arch builds (amd64 and arm64) without QEMU for optimal performance.
+The GitHub Actions pipeline (`.github/workflows/ci.yml`) runs on every push to `main` and on pull requests:
 
-**✅ ARM64 builds work out of the box for public repositories!**
+1. **Test** -- installs dependencies, runs unit and e2e tests, builds the application
+2. **Build images** -- builds Docker images natively on both amd64 and arm64 runners (no QEMU emulation)
+3. **Merge manifests** -- creates a multi-arch manifest and pushes to GitHub Container Registry (`ghcr.io`)
 
-As of January 2025, GitHub provides free ARM64 runners (`ubuntu-24.04-arm`) for public repos. The workflow is already configured correctly.
-
-**For private repositories:**
-- Requires GitHub Team/Enterprise plan, OR
-- Use a self-hosted ARM64 runner, OR
-- Remove the arm64 matrix entry to build amd64 only
-
-### CI/CD Pipeline
-
-The GitHub Actions workflow:
-1. Runs tests on every push/PR
-2. Builds Docker images natively for each architecture (amd64, arm64)
-3. Pushes images to GitHub Container Registry (ghcr.io)
-4. Creates multi-arch manifest with tags:
-   - `latest` (main branch only)
-   - `main` (main branch)
-   - `sha-<commit>` (short commit hash)
-   - `v1.2.3` (semver tags)
-
-Pull the image:
+Image tags: `latest` (main branch), `main`, `sha-<commit>`, `v*.*.*` (semver tags).
 
 ```bash
 docker pull ghcr.io/<your-username>/homepage-v2:latest
 ```
 
-## Deployment
+## Design System
 
-Deploy the `dist` folder to any static host provider (Vercel, Netlify, Cloudflare Pages, etc.)
+The project uses a "Midnight" dark theme defined entirely through CSS custom properties in `src/styles/global.css`. The token system includes:
 
-## Learn More
+- **Color scales** -- gray and blue palettes with semantic aliases
+- **Global tokens** (`--g-*`) -- background, text, border, spacing, radius, and transition values
+- **Semantic colors** -- `--color-primary`, `--color-accent`, `--color-danger`
+- **Component patterns** -- hover overlays via `::before` pseudo-elements, consistent focus rings, BEM naming
 
-- [SolidJS Documentation](https://solidjs.com)
-- [SolidJS Router Documentation](https://docs.solidjs.com/solid-router)
-- [Vite Documentation](https://vitejs.dev)
-- [Bun Documentation](https://bun.sh)
-- [Vitest Documentation](https://vitest.dev)
-- [Playwright Documentation](https://playwright.dev)
+Each component has its own CSS file in `src/styles/components/{category}/` that builds on these global tokens.
+
+## Tech Stack
+
+- [SolidJS](https://solidjs.com) -- fine-grained reactive UI framework
+- [@solidjs/router](https://docs.solidjs.com/solid-router) -- client-side routing
+- [Vite](https://vitejs.dev) -- build tool with HMR
+- [Bun](https://bun.sh) -- runtime and package manager
+- [TypeScript](https://www.typescriptlang.org) -- type safety
+- [Vitest](https://vitest.dev) -- unit testing
+- [Playwright](https://playwright.dev) -- end-to-end testing
+- [solid-icons](https://github.com/x64Bits/solid-icons) -- icon library
+
+## License
+
+MIT
