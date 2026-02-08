@@ -313,3 +313,4 @@ When adding new components:
 8. Create a demo file in `src/app/pages/demos/ComponentNameDemo.tsx` and add a route in `src/app/App.tsx`
 9. Verify all tests pass: `bun run test`
 10. Type check: `bunx tsc --noEmit`
+11. **Update documentation**: Update all three docs (`CLAUDE.md`, `README.md`, `DOCS.md`) with the new component, updated counts, and any architectural changes. This is mandatory, not optional.
