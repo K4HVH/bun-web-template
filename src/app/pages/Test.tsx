@@ -7,7 +7,7 @@ import {
   BsType, BsInputCursor, BsCardText, BsCheckSquare, BsCircle,
   BsList, BsChevronExpand, BsSliders, BsCursor, BsGrid,
   BsArrowRepeat, BsWindowStack, BsBell, BsChat, BsAward,
-  BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable,
+  BsPerson, BsFolder, BsLayoutSidebar, BsFileText, BsTable, BsThreeDots,
 } from 'solid-icons/bs';
 
 const tabOptions = [
@@ -31,6 +31,7 @@ const tabOptions = [
   { value: 'pane', label: 'Pane', icon: BsLayoutSidebar },
   { value: 'form', label: 'Form', icon: BsFileText },
   { value: 'table', label: 'Table', icon: BsTable },
+  { value: 'menu', label: 'Menu', icon: BsThreeDots },
 ];
 
 const Test = (props: RouteSectionProps) => {

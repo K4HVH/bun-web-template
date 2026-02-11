@@ -1,10 +1,10 @@
 # Homepage v2
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 19 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 20 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **19 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **20 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -84,6 +84,7 @@ Page layout and navigation components.
 
 | Component | Description |
 |-----------|-------------|
+| **Menu** | Dropdown/context menu with nested submenus |
 | **Pane** | Collapsible side/top/bottom panel |
 | **Tabs** | Tab bar for content switching with icon support |
 
@@ -97,13 +98,13 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 19 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, etc.)
+│       └── demos/              # 20 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
 │   ├── feedback/               # Dialog, Notification
 │   ├── surfaces/               # Card, GridBackground
-│   └── navigation/             # Pane, Tabs
+│   └── navigation/             # Menu, Pane, Tabs
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files

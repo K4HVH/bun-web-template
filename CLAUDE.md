@@ -50,13 +50,13 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 19 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, etc.)
+      demos/                # 20 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (8 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (5 components)
     feedback/               # User feedback (2 components)
-    navigation/             # Navigation patterns (2 components)
+    navigation/             # Navigation patterns (3 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
     components/{category}/  # Per-component CSS files (mirror component tree)
@@ -64,7 +64,7 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (17 test files)
+  unit/                     # Vitest unit tests (18 test files)
   e2e/                      # Playwright e2e tests (7 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -102,6 +102,7 @@ src/components/
     Dialog.tsx               # Modal dialog via Portal over Card. Sizes: small, medium (default), large, fullscreen. Backdrop/escape dismiss. Exports DialogHeader, DialogFooter.
     Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (default), top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
   navigation/                # Navigation patterns
+    Menu.tsx                 # Dropdown/context menu via Portal. Triggers: click, contextmenu, both. Auto-positioning with flip. Anchored (follows trigger on scroll) or unanchored. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Supports nested submenus with hover. Exports MenuItem, MenuSeparator.
     Pane.tsx                 # Collapsible side/top/bottom panel. States: closed, partial, open. Modes: permanent (push, with handle) or temporary (overlay, with backdrop). Controlled or uncontrolled. Position: left (default), right, top, bottom.
     Tabs.tsx                 # Tab bar for content switching. Variants: primary, secondary, subtle. Orientation: horizontal (default), vertical. Options array with value/label/icon. Controlled or uncontrolled. Sizes: compact, normal, spacious.
 ```
@@ -121,7 +122,7 @@ Consistent patterns across components:
 
 ### Portal Rendering
 
-Five components render via `Portal` from `solid-js/web`: **Combobox** (dropdown), **Slider** (tooltip), **Tooltip**, **Dialog**, and **Notification**. This ensures correct z-index stacking and fixed positioning.
+Six components render via `Portal` from `solid-js/web`: **Combobox** (dropdown), **Menu** (dropdown menu), **Slider** (tooltip), **Tooltip**, **Dialog**, and **Notification**. This ensures correct z-index stacking and fixed positioning.
 
 **Unit test pattern for Portal components**:
 ```typescript

@@ -23,6 +23,7 @@ import TabsDemo from './pages/demos/TabsDemo';
 import PaneDemo from './pages/demos/PaneDemo';
 import FormDemo from './pages/demos/FormDemo';
 import TableDemo from './pages/demos/TableDemo';
+import MenuDemo from './pages/demos/MenuDemo';
 
 const App: Component = () => {
   return (
@@ -50,6 +51,7 @@ const App: Component = () => {
           <Route path="pane" component={PaneDemo} />
           <Route path="form" component={FormDemo} />
           <Route path="table" component={TableDemo} />
+          <Route path="menu" component={MenuDemo} />
         </Route>
       </Router>
     </NotificationProvider>

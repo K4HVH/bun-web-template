@@ -6,7 +6,7 @@ Comprehensive reference for the SolidJS component library. Combines the componen
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 19 components in this SolidJS design system, organized by category.
+A comprehensive reference for all 20 components in this SolidJS design system, organized by category.
 
 ---
 
@@ -1190,6 +1190,168 @@ All notification containers are rendered via `Portal`. Query `document` directly
 ---
 
 ## Navigation
+
+### Menu
+
+A dropdown or context menu that renders via Portal with auto-positioning and viewport edge detection. Supports click and right-click triggers, nested submenus with hover, and is designed as a flexible surface (like Card) where any content can be rendered.
+
+**Props Interface**
+
+```typescript
+interface MenuProps {
+  trigger: JSX.Element;                // Element that opens the menu
+  children: JSX.Element;                // Menu content (MenuItem, MenuSeparator, or custom)
+  openOn?: 'click' | 'contextmenu' | 'both';  // default: 'both'
+  placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start';  // default: 'bottom-start'
+  autoFlip?: boolean;                   // default: true
+  anchored?: boolean;                   // default: true (follows trigger on scroll/resize)
+  open?: boolean;                       // controlled state
+  onOpenChange?: (open: boolean) => void;
+  variant?: 'default' | 'emphasized' | 'subtle';  // default: 'default'
+  size?: 'compact' | 'normal' | 'spacious';  // default: 'normal'
+  class?: string;
+}
+
+interface MenuItemProps {
+  children: JSX.Element;
+  onClick?: () => void;
+  disabled?: boolean;
+  submenu?: JSX.Element;                // Nested submenu content
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Trigger modes**: `click` (left-click only), `contextmenu` (right-click only), `both` (either click)
+- **Placement**: Initial menu position relative to trigger (`bottom-start`, `bottom-end`, `top-start`, `top-end`, `right-start`, `left-start`). Includes 4px gap between trigger and menu.
+- **Auto-flip**: Automatically repositions menu when it would overflow viewport edges
+- **Anchored**: When `true` (default), menu follows trigger element on scroll and resize. When `false`, menu stays fixed in viewport position.
+- **Variants**: `default` (standard border/background), `emphasized` (elevated background, emphasis border), `subtle` (no border, lighter shadow)
+- **Sizes**: `compact` (smaller padding/font), `normal`, `spacious` (larger padding/font)
+- **Controlled vs Uncontrolled**: Provide `open` + `onOpenChange` for controlled state; otherwise menu manages its own open/closed state
+- **Nested submenus**: MenuItem accepts `submenu` prop; submenu appears on hover and auto-positions to right or left of parent with 4px gap
+- **Dismissal**: Closes on click outside, Escape key, or when MenuItem without submenu is clicked
+- **Portal rendering**: Menu renders to document.body via Portal for correct z-index stacking
+
+**Usage Example**
+
+```tsx
+import { Menu, MenuItem, MenuSeparator } from '../components/navigation/Menu';
+import { Button } from '../components/inputs/Button';
+import { BsGear, BsTrash } from 'solid-icons/bs';
+
+{/* Basic menu with click trigger */}
+<Menu trigger={<Button>Actions</Button>} openOn="click">
+  <MenuItem onClick={handleEdit}>
+    <BsGear /> Edit
+  </MenuItem>
+  <MenuSeparator />
+  <MenuItem onClick={handleDelete} disabled>
+    <BsTrash /> Delete
+  </MenuItem>
+</Menu>
+
+{/* Context menu (right-click) */}
+<Menu
+  trigger={<div>Right-click me</div>}
+  openOn="contextmenu"
+  placement="bottom-end"
+>
+  <MenuItem>Cut</MenuItem>
+  <MenuItem>Copy</MenuItem>
+  <MenuItem>Paste</MenuItem>
+</Menu>
+
+{/* Nested submenus */}
+<Menu trigger={<Button>File</Button>}>
+  <MenuItem>New</MenuItem>
+  <MenuItem
+    submenu={
+      <>
+        <MenuItem>Project 1</MenuItem>
+        <MenuItem>Project 2</MenuItem>
+      </>
+    }
+  >
+    Open Recent
+  </MenuItem>
+  <MenuItem
+    submenu={
+      <>
+        <MenuItem>JSON</MenuItem>
+        <MenuItem>CSV</MenuItem>
+        <MenuItem
+          submenu={
+            <>
+              <MenuItem>A4</MenuItem>
+              <MenuItem>Letter</MenuItem>
+            </>
+          }
+        >
+          PDF
+        </MenuItem>
+      </>
+    }
+  >
+    Export
+  </MenuItem>
+</Menu>
+
+{/* Custom content (not using MenuItem) */}
+<Menu trigger={<Button>Custom</Button>}>
+  <div style={{ padding: 'var(--g-spacing)' }}>
+    <h4>Menu Title</h4>
+    <p>You can put any content here.</p>
+    <MenuSeparator />
+    <MenuItem>Still works</MenuItem>
+  </div>
+</Menu>
+
+{/* Controlled state */}
+<Menu
+  trigger={<Button>Controlled</Button>}
+  open={menuOpen()}
+  onOpenChange={setMenuOpen}
+>
+  <MenuItem>Item</MenuItem>
+</Menu>
+
+{/* Unanchored menu (stays fixed on scroll) */}
+<Menu
+  trigger={<Button>Fixed Menu</Button>}
+  anchored={false}
+>
+  <MenuItem>Stays in place</MenuItem>
+  <MenuItem>when you scroll</MenuItem>
+</Menu>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.menu` | Base menu surface (Portal-rendered) |
+| `.menu--default`, `.menu--emphasized`, `.menu--subtle` | Variant modifiers |
+| `.menu--compact`, `.menu--spacious` | Size modifiers |
+| `.menu--bottom-start`, `.menu--bottom-end`, etc. | Placement modifiers |
+| `.menu--submenu` | Nested submenu modifier (slide-in animation) |
+| `.menu__trigger` | Wrapper for trigger element |
+| `.menu__item` | Menu item button |
+| `.menu__item--disabled` | Disabled menu item |
+| `.menu__item--has-submenu` | Item with nested submenu |
+| `.menu__item-chevron` | Chevron icon for submenu indicator |
+| `.menu__separator` | Horizontal separator line |
+
+**Design Notes**
+
+- Menu is intentionally designed as a flexible surface (similar to Card) where you can render any content, not just MenuItem components
+- MenuItem and MenuSeparator are convenience helpers but are entirely optional
+- Position calculation runs on menu open and updates when window resizes
+- Submenus use the same positioning logic as the main menu
+- Click outside detection excludes both menu and trigger elements
+
+---
 
 ### Pane
 
