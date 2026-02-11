@@ -2,6 +2,19 @@
    Combobox Component
    ============================================================================= */
 
+/* Wrapper added by Menu component */
+.combobox-wrapper {
+  display: inline-block;
+  width: auto;
+}
+
+/* Remove Menu's default padding for combobox dropdowns */
+.menu:has(.combobox__dropdown) {
+  padding: 0;
+  min-width: auto;
+  max-width: none;
+}
+
 .combobox {
   position: relative;
   display: inline-flex;
@@ -123,26 +136,13 @@
 
 /* Dropdown menu */
 .combobox__dropdown {
-  background: var(--g-background-elevated);
-  border: var(--g-border-width) solid var(--g-border-color);
-  border-radius: var(--g-radius);
+  /* Menu component now handles background, border, border-radius, box-shadow, animation */
+  /* Only keep functional styles here */
   max-height: 300px;
   overflow-y: auto;
-  z-index: 9999;
-  animation: combobox-dropdown-fade-in 0.15s ease-out;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes combobox-dropdown-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Animation now handled by Menu component */
 
 /* Dropdown options */
 .combobox__option {
@@ -156,6 +156,13 @@
   position: relative;
 }
 
+/* Compact size for dropdown options - use dropdown class since options are in Portal */
+.combobox__dropdown--compact .combobox__option {
+  padding: var(--spacing-1) var(--g-spacing-sm) var(--spacing-1) var(--spacing-1);
+  font-size: var(--font-size-sm);
+}
+
+/* Keep the old selector for backwards compatibility in case it's needed */
 .combobox--compact .combobox__option {
   padding: var(--spacing-1) var(--g-spacing-sm) var(--spacing-1) var(--spacing-1);
   font-size: var(--font-size-sm);

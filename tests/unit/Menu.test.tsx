@@ -101,7 +101,7 @@ describe('Menu', () => {
     });
 
     const outside = screen.getByTestId('outside');
-    fireEvent.click(outside);
+    fireEvent.mouseDown(outside);
 
     await waitFor(() => {
       expect(document.querySelector('.menu')).not.toBeInTheDocument();

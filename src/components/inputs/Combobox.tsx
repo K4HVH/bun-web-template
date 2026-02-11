@@ -1,7 +1,7 @@
-import { Component, createSignal, createEffect, Show, For, splitProps, JSX, onCleanup } from 'solid-js';
-import { Portal } from 'solid-js/web';
+import { Component, createSignal, Show, For, splitProps, JSX } from 'solid-js';
 import { BsX } from 'solid-icons/bs';
 import { Checkbox } from './Checkbox';
+import { Menu } from '../navigation/Menu';
 import '../../styles/components/inputs/Combobox.css';
 
 interface ComboboxOption {
@@ -45,42 +45,8 @@ export const Combobox: Component<ComboboxProps> = (props) => {
   ]);
 
   const [isOpen, setIsOpen] = createSignal(false);
-  const [dropdownPosition, setDropdownPosition] = createSignal({ top: 0, left: 0, width: 0 });
-  let comboboxRef: HTMLDivElement | undefined;
-  let dropdownRef: HTMLDivElement | undefined;
 
   const size = () => local.size ?? 'normal';
-
-  // Update dropdown position when opened or on scroll/resize
-  const updatePosition = () => {
-    if (comboboxRef) {
-      const rect = comboboxRef.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 4,
-        left: rect.left,
-        width: rect.width,
-      });
-    }
-  };
-
-  createEffect(() => {
-    if (isOpen()) {
-      updatePosition();
-      window.addEventListener('scroll', updatePosition, true);
-      window.addEventListener('resize', updatePosition);
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      window.removeEventListener('scroll', updatePosition, true);
-      window.removeEventListener('resize', updatePosition);
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-  });
-
-  onCleanup(() => {
-    window.removeEventListener('scroll', updatePosition, true);
-    window.removeEventListener('resize', updatePosition);
-    document.removeEventListener('mousedown', handleClickOutside);
-  });
 
   const selectedValues = (): string[] => {
     if (local.multiple) {
@@ -98,11 +64,7 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     return selectedValues().includes(value);
   };
 
-  const handleToggle = () => {
-    if (!local.disabled) {
-      setIsOpen(!isOpen());
-    }
-  };
+  // Menu handles opening/closing via open/onOpenChange props
 
   const handleSelect = (value: string) => {
     if (!local.onChange) return;
@@ -116,6 +78,7 @@ export const Combobox: Component<ComboboxProps> = (props) => {
       // Don't close dropdown in multiple mode
     } else {
       local.onChange(value);
+      // Close dropdown after selection in single-select mode
       setIsOpen(false);
     }
   };
@@ -125,15 +88,6 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     const currentValues = selectedValues();
     const newValues = currentValues.filter(v => v !== value);
     local.onChange(newValues);
-  };
-
-  const handleClickOutside = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    // Don't close if clicking inside combobox or dropdown
-    if (comboboxRef?.contains(target) || dropdownRef?.contains(target)) {
-      return;
-    }
-    setIsOpen(false);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -179,118 +133,122 @@ export const Combobox: Component<ComboboxProps> = (props) => {
   };
 
   return (
-    <div
-      ref={comboboxRef}
-      class={classNames()}
-      tabIndex={local.disabled ? -1 : 0}
-      onKeyDown={handleKeyDown}
-      onBlur={local.onBlur}
-      aria-invalid={local.invalid || !!local.error}
-      {...rest}
-    >
-      <div class="combobox__trigger" onClick={handleToggle}>
-        <span class="combobox__value">
-          <Show when={selectedOptions().length > 0} fallback={<span class="combobox__placeholder">{local.placeholder || 'Select...'}</span>}>
-            {local.multiple ? (
-              <div class="combobox__chips">
-                <For each={selectedOptions()}>
-                  {(option) => {
-                    const Icon = option.iconChecked || option.icon;
+    <Menu
+      trigger={
+        <div
+          class={classNames()}
+          tabIndex={local.disabled ? -1 : 0}
+          onKeyDown={handleKeyDown}
+          onBlur={local.onBlur}
+          aria-invalid={local.invalid || !!local.error}
+          {...rest}
+        >
+          <div class="combobox__trigger">
+            <span class="combobox__value">
+              <Show when={selectedOptions().length > 0} fallback={<span class="combobox__placeholder">{local.placeholder || 'Select...'}</span>}>
+                {local.multiple ? (
+                  <div class="combobox__chips">
+                    <For each={selectedOptions()}>
+                      {(option) => {
+                        const Icon = option.iconChecked || option.icon;
+                        return (
+                          <span class="combobox__chip">
+                            {Icon && (
+                              <span class="combobox__icon">
+                                <Icon />
+                              </span>
+                            )}
+                            <span>{option.label}</span>
+                            <button
+                              type="button"
+                              class="combobox__chip-remove"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemove(option.value);
+                              }}
+                            >
+                              <BsX />
+                            </button>
+                          </span>
+                        );
+                      }}
+                    </For>
+                  </div>
+                ) : (
+                  (() => {
+                    const option = selectedOptions()[0];
+                    const Icon = option?.icon;
                     return (
-                      <span class="combobox__chip">
+                      <>
                         {Icon && (
                           <span class="combobox__icon">
                             <Icon />
                           </span>
                         )}
-                        <span>{option.label}</span>
-                        <button
-                          type="button"
-                          class="combobox__chip-remove"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRemove(option.value);
-                          }}
-                        >
-                          <BsX />
-                        </button>
-                      </span>
+                        <span>{option?.label}</span>
+                      </>
                     );
-                  }}
-                </For>
-              </div>
-            ) : (
-              (() => {
-                const option = selectedOptions()[0];
-                const Icon = option?.icon;
-                return (
-                  <>
-                    {Icon && (
-                      <span class="combobox__icon">
-                        <Icon />
-                      </span>
-                    )}
-                    <span>{option?.label}</span>
-                  </>
-                );
-              })()
-            )}
-          </Show>
-        </span>
-        <span class="combobox__arrow" />
-      </div>
-
-      <Show when={isOpen()}>
-        <Portal>
-          <div
-            ref={dropdownRef}
-            class="combobox__dropdown"
-            style={{
-              position: 'fixed',
-              top: `${dropdownPosition().top}px`,
-              left: `${dropdownPosition().left}px`,
-              width: `${dropdownPosition().width}px`,
-            }}
-          >
-            <For each={local.options}>
-              {(option) => (
-                <div
-                  class={`combobox__option ${option.disabled ? 'combobox__option--disabled' : ''} ${isSelected(option.value) ? 'combobox__option--selected' : ''}`}
-                  onMouseDown={(e) => {
-                    if (option.disabled) {
-                      e.stopPropagation();
-                      e.preventDefault();
-                    }
-                  }}
-                  onClick={(e) => {
-                    if (option.disabled) {
-                      e.stopPropagation();
-                      return;
-                    }
-                    handleSelect(option.value);
-                  }}
-                >
-                  {local.multiple ? (
-                    <Checkbox
-                      checked={isSelected(option.value)}
-                      disabled={option.disabled}
-                      iconUnchecked={option.iconUnchecked}
-                      iconChecked={option.iconChecked}
-                    />
-                  ) : (
-                    option.icon && (
-                      <span class="combobox__icon">
-                        <option.icon />
-                      </span>
-                    )
-                  )}
-                  <span>{option.label}</span>
-                </div>
-              )}
-            </For>
+                  })()
+                )}
+              </Show>
+            </span>
+            <span class="combobox__arrow" />
           </div>
-        </Portal>
-      </Show>
-    </div>
+        </div>
+      }
+      open={isOpen()}
+      onOpenChange={(open) => {
+        if (!local.disabled) {
+          setIsOpen(open);
+        }
+      }}
+      openOn="click"
+      placement="bottom-start"
+      matchTriggerWidth={true}
+      closeOnContentClick={false}
+      anchored={true}
+      variant="default"
+      size={size()}
+      wrapperClass="combobox-wrapper"
+    >
+      <div class={`combobox__dropdown${size() === 'compact' ? ' combobox__dropdown--compact' : ''}`}>
+        <For each={local.options}>
+          {(option) => (
+            <div
+              class={`combobox__option ${option.disabled ? 'combobox__option--disabled' : ''} ${isSelected(option.value) ? 'combobox__option--selected' : ''}`}
+              onMouseDown={(e) => {
+                if (option.disabled) {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }
+              }}
+              onClick={(e) => {
+                if (option.disabled) {
+                  e.stopPropagation();
+                  return;
+                }
+                handleSelect(option.value);
+              }}
+            >
+              {local.multiple ? (
+                <Checkbox
+                  checked={isSelected(option.value)}
+                  disabled={option.disabled}
+                  iconUnchecked={option.iconUnchecked}
+                  iconChecked={option.iconChecked}
+                />
+              ) : (
+                option.icon && (
+                  <span class="combobox__icon">
+                    <option.icon />
+                  </span>
+                )
+              )}
+              <span>{option.label}</span>
+            </div>
+          )}
+        </For>
+      </div>
+    </Menu>
   );
 };

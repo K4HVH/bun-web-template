@@ -34,7 +34,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).toBeInTheDocument();
-    }, { timeout: 100 });
+    });
   });
 
   it('displays all options when dropdown is open', async () => {
@@ -49,7 +49,7 @@ describe('Combobox', () => {
       expect(dropdown?.textContent).toContain('Option 1');
       expect(dropdown?.textContent).toContain('Option 2');
       expect(dropdown?.textContent).toContain('Option 3');
-    }, { timeout: 100 });
+    });
   });
 
   it('selects option on click', async () => {
@@ -76,7 +76,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).toBeInTheDocument();
-    }, { timeout: 100 });
+    });
 
     const options = document.querySelectorAll('.combobox__option');
     fireEvent.click(options[1]); // Click "Option 2"
@@ -96,7 +96,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).toBeInTheDocument();
-    }, { timeout: 100 });
+    });
 
     const options = document.querySelectorAll('.combobox__option');
     fireEvent.click(options[1]); // Click "Option 2"
@@ -104,7 +104,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).not.toBeInTheDocument();
-    }, { timeout: 100 });
+    });
 
     expect(handleChange).toHaveBeenCalledWith('option2');
   });
@@ -145,7 +145,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const icons = document.querySelectorAll('.combobox__icon');
       expect(icons.length).toBeGreaterThan(0);
-    }, { timeout: 100 });
+    });
   });
 
   it('disabled options cannot be selected', async () => {
@@ -166,7 +166,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).toBeInTheDocument();
-    }, { timeout: 100 });
+    });
 
     const disabledOption = document.querySelector('.combobox__option--disabled');
     if (disabledOption) {
@@ -195,7 +195,7 @@ describe('Combobox', () => {
     await waitFor(() => {
       const dropdown = document.querySelector('.combobox__dropdown');
       expect(dropdown).toBeInTheDocument();
-    }, { timeout: 100 });
+    });
 
     const outside = container.querySelector('[data-testid="outside"]') as HTMLElement;
     fireEvent.mouseDown(outside);

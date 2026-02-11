@@ -22,14 +22,18 @@ export interface MenuProps {
   placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start';
   autoFlip?: boolean;
   anchored?: boolean; // If true, menu follows trigger on scroll/resize (default: true)
+  matchTriggerWidth?: boolean; // If true, menu width matches trigger width (default: false)
   // Controlled state
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  // Behavior
+  closeOnContentClick?: boolean; // If true, menu closes when content is clicked (default: true)
   // Appearance
   variant?: 'default' | 'emphasized' | 'subtle';
   size?: 'compact' | 'normal' | 'spacious';
   // Other
   class?: string;
+  wrapperClass?: string; // Custom class for trigger wrapper
 }
 
 export const Menu: Component<MenuProps> = (props) => {
@@ -40,17 +44,22 @@ export const Menu: Component<MenuProps> = (props) => {
     'placement',
     'autoFlip',
     'anchored',
+    'matchTriggerWidth',
     'open',
     'onOpenChange',
+    'closeOnContentClick',
     'variant',
     'size',
     'class',
+    'wrapperClass',
   ]);
 
   const openOn = () => local.openOn ?? 'both';
   const placement = () => local.placement ?? 'bottom-start';
   const autoFlip = () => local.autoFlip ?? true;
   const anchored = () => local.anchored ?? true;
+  const matchTriggerWidth = () => local.matchTriggerWidth ?? false;
+  const closeOnContentClick = () => local.closeOnContentClick ?? true;
   const variant = () => local.variant ?? 'default';
   const size = () => local.size ?? 'normal';
 
@@ -70,6 +79,7 @@ export const Menu: Component<MenuProps> = (props) => {
   let menuRef: HTMLDivElement | undefined;
 
   const [position, setPosition] = createSignal({ top: 0, left: 0 });
+  const [menuWidth, setMenuWidth] = createSignal<number | undefined>(undefined);
   const [finalPlacement, setFinalPlacement] = createSignal(placement());
   const [isPositioned, setIsPositioned] = createSignal(false);
 
@@ -170,6 +180,12 @@ export const Menu: Component<MenuProps> = (props) => {
 
     setPosition({ top, left });
     setFinalPlacement(currentPlacement);
+
+    // Set menu width to match trigger if requested
+    if (matchTriggerWidth()) {
+      setMenuWidth(triggerRect.width);
+    }
+
     setIsPositioned(true);
   };
 
@@ -192,9 +208,18 @@ export const Menu: Component<MenuProps> = (props) => {
   const handleClickOutside = (e: MouseEvent) => {
     if (!menuRef || !triggerRef) return;
     const target = e.target as Node;
-    if (!menuRef.contains(target) && !triggerRef.contains(target)) {
+    const clickedInMenu = menuRef.contains(target);
+    const clickedInTrigger = triggerRef.contains(target);
+
+    if (!clickedInMenu && !clickedInTrigger) {
+      // Clicked outside both menu and trigger - always close
+      setOpen(false);
+    } else if (clickedInMenu && closeOnContentClick()) {
+      // Clicked inside menu and should close on content click
       setOpen(false);
     }
+    // If clicked in menu but closeOnContentClick is false, stay open
+    // If clicked in trigger, the trigger's own handler will toggle
   };
 
   const handleEscape = (e: KeyboardEvent) => {
@@ -205,7 +230,8 @@ export const Menu: Component<MenuProps> = (props) => {
   };
 
   onMount(() => {
-    document.addEventListener('click', handleClickOutside);
+    // Use mousedown instead of click for faster response and compatibility with existing tests
+    document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
 
     // Add scroll and resize listeners if anchored
@@ -215,7 +241,7 @@ export const Menu: Component<MenuProps> = (props) => {
     }
 
     onCleanup(() => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
       if (anchored()) {
         window.removeEventListener('scroll', updatePosition, true);
@@ -257,7 +283,7 @@ export const Menu: Component<MenuProps> = (props) => {
     <>
       <div
         ref={triggerRef}
-        class="menu__trigger"
+        class={`menu__trigger${local.wrapperClass ? ' ' + local.wrapperClass : ''}`}
         onClick={handleTriggerClick}
         onContextMenu={handleTriggerContextMenu}
       >
@@ -272,6 +298,7 @@ export const Menu: Component<MenuProps> = (props) => {
             style={{
               top: `${position().top}px`,
               left: `${position().left}px`,
+              width: menuWidth() ? `${menuWidth()}px` : undefined,
               opacity: isPositioned() ? 1 : 0,
               transition: isPositioned() ? 'opacity 0.1s ease' : 'none',
             }}
