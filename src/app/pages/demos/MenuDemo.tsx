@@ -309,7 +309,7 @@ const MenuDemo: Component = () => {
           >
             <MenuItem onClick={() => handleAction('new')}>New File</MenuItem>
             <MenuItem
-              submenu={
+              submenu={() => (
                 <>
                   <MenuItem onClick={() => handleAction('open-recent-1')}>Project 1</MenuItem>
                   <MenuItem onClick={() => handleAction('open-recent-2')}>Project 2</MenuItem>
@@ -317,27 +317,27 @@ const MenuDemo: Component = () => {
                   <MenuSeparator />
                   <MenuItem onClick={() => handleAction('clear-recent')}>Clear Recent</MenuItem>
                 </>
-              }
+              )}
             >
               Open Recent
             </MenuItem>
             <MenuItem
-              submenu={
+              submenu={() => (
                 <>
                   <MenuItem onClick={() => handleAction('export-json')}>Export as JSON</MenuItem>
                   <MenuItem onClick={() => handleAction('export-csv')}>Export as CSV</MenuItem>
                   <MenuItem
-                    submenu={
+                    submenu={() => (
                       <>
                         <MenuItem onClick={() => handleAction('export-pdf-a4')}>A4</MenuItem>
                         <MenuItem onClick={() => handleAction('export-pdf-letter')}>Letter</MenuItem>
                       </>
-                    }
+                    )}
                   >
                     Export as PDF
                   </MenuItem>
                 </>
-              }
+              )}
             >
               Export
             </MenuItem>

@@ -309,12 +309,12 @@ describe('Menu', () => {
       <Menu trigger={<Button>Open Menu</Button>}>
         <MenuItem>Regular Item</MenuItem>
         <MenuItem
-          submenu={
+          submenu={() => (
             <>
               <MenuItem>Submenu Item 1</MenuItem>
               <MenuItem>Submenu Item 2</MenuItem>
             </>
-          }
+          )}
         >
           Item with Submenu
         </MenuItem>

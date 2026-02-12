@@ -1216,7 +1216,7 @@ interface MenuItemProps {
   children: JSX.Element;
   onClick?: () => void;
   disabled?: boolean;
-  submenu?: JSX.Element;                // Nested submenu content
+  submenu?: () => JSX.Element;          // Function that returns nested submenu content
   class?: string;
 }
 ```
@@ -1230,7 +1230,7 @@ interface MenuItemProps {
 - **Variants**: `default` (standard border/background), `emphasized` (elevated background, emphasis border), `subtle` (no border, lighter shadow)
 - **Sizes**: `compact` (smaller padding/font), `normal`, `spacious` (larger padding/font)
 - **Controlled vs Uncontrolled**: Provide `open` + `onOpenChange` for controlled state; otherwise menu manages its own open/closed state
-- **Nested submenus**: MenuItem accepts `submenu` prop; submenu appears on hover and auto-positions to right or left of parent with 4px gap
+- **Nested submenus**: MenuItem accepts `submenu` prop as a function that returns JSX; submenu appears on hover and auto-positions to right or left of parent with 4px gap. Using a function ensures proper reactive ownership and disposal.
 - **Dismissal**: Closes on click outside, Escape key, or when MenuItem without submenu is clicked
 - **Portal rendering**: Menu renders to document.body via Portal for correct z-index stacking
 
@@ -1263,36 +1263,36 @@ import { BsGear, BsTrash } from 'solid-icons/bs';
   <MenuItem>Paste</MenuItem>
 </Menu>
 
-{/* Nested submenus */}
+{/* Nested submenus - submenu prop accepts a function */}
 <Menu trigger={<Button>File</Button>}>
   <MenuItem>New</MenuItem>
   <MenuItem
-    submenu={
+    submenu={() => (
       <>
         <MenuItem>Project 1</MenuItem>
         <MenuItem>Project 2</MenuItem>
       </>
-    }
+    )}
   >
     Open Recent
   </MenuItem>
   <MenuItem
-    submenu={
+    submenu={() => (
       <>
         <MenuItem>JSON</MenuItem>
         <MenuItem>CSV</MenuItem>
         <MenuItem
-          submenu={
+          submenu={() => (
             <>
               <MenuItem>A4</MenuItem>
               <MenuItem>Letter</MenuItem>
             </>
-          }
+          )}
         >
           PDF
         </MenuItem>
       </>
-    }
+    )}
   >
     Export
   </MenuItem>

@@ -316,7 +316,7 @@ export const MenuItem: Component<{
   children: JSX.Element;
   onClick?: () => void;
   disabled?: boolean;
-  submenu?: JSX.Element;
+  submenu?: () => JSX.Element;
   class?: string;
 }> = (props) => {
   const [local] = splitProps(props, ['children', 'onClick', 'disabled', 'submenu', 'class']);
@@ -403,7 +403,7 @@ export const MenuItem: Component<{
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {local.submenu}
+            {local.submenu!()}
           </div>
         </Portal>
       </Show>
