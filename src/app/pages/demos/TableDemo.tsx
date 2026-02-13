@@ -4,6 +4,7 @@ import { Card, CardHeader } from '../../../components/surfaces/Card';
 import { Table, type Column } from '../../../components/display/Table';
 import { Badge } from '../../../components/display/Badge';
 import { Button } from '../../../components/inputs/Button';
+import { Pagination } from '../../../components/navigation/Pagination';
 
 interface User {
   id: string;
@@ -33,11 +34,44 @@ const manyUsers: User[] = [
   { id: '12', name: 'Leo Anderson', email: 'leo@example.com', role: 'User', status: 'inactive', joined: '2024-12-01' },
 ];
 
+// Generate larger dataset for pagination example
+const largeUserList: User[] = Array.from({ length: 50 }, (_, i) => {
+  const id = String(i + 1);
+  const names = ['Alex', 'Bailey', 'Charlie', 'Dana', 'Eli', 'Finn', 'Gray', 'Harper', 'Iris', 'Jordan'];
+  const surnames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+  const roles = ['Admin', 'User', 'Editor'];
+  const statuses: Array<'active' | 'inactive' | 'pending'> = ['active', 'inactive', 'pending'];
+
+  const firstName = names[i % names.length];
+  const lastName = surnames[Math.floor(i / names.length) % surnames.length];
+  const name = `${firstName} ${lastName}`;
+  const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i > 9 ? i : ''}@example.com`;
+  const role = roles[i % roles.length];
+  const status = statuses[i % statuses.length];
+  const month = String((i % 12) + 1).padStart(2, '0');
+  const day = String((i % 28) + 1).padStart(2, '0');
+  const joined = `2024-${month}-${day}`;
+
+  return { id, name, email, role, status, joined };
+});
+
 const TableDemo: Component = () => {
   const [selectedRows, setSelectedRows] = createSignal<Set<string>>(new Set());
   const [sortKey, setSortKey] = createSignal<string | undefined>(undefined);
   const [sortDirection, setSortDirection] = createSignal<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = createSignal(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = createSignal(1);
+  const pageSize = 10;
+  const totalPages = () => Math.ceil(largeUserList.length / pageSize);
+
+  // Get paginated data slice
+  const paginatedUsers = () => {
+    const startIndex = (currentPage() - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return largeUserList.slice(startIndex, endIndex);
+  };
 
   const handleSort = (key: string, direction: 'asc' | 'desc') => {
     setSortKey(key);
@@ -321,6 +355,45 @@ const TableDemo: Component = () => {
           onSort={handleSort}
           stickyHeader={false}
         />
+      </Card>
+
+      <Card>
+        <CardHeader
+          title="Paginated Table"
+          subtitle="Table with Pagination component - 50 users, 10 per page"
+        />
+        <div style={{ display: 'flex', 'flex-direction': 'column', gap: '1rem' }}>
+          <Table
+            columns={basicColumns}
+            data={paginatedUsers()}
+            getRowId={(row) => row.id}
+            variant="default"
+            size="compact"
+          />
+
+          <div style={{
+            display: 'flex',
+            'justify-content': 'space-between',
+            'align-items': 'center',
+            'padding-top': '0.5rem',
+            'border-top': '1px solid var(--g-border-color)'
+          }}>
+            <p style={{
+              color: 'var(--g-text-muted)',
+              'font-size': 'var(--font-size-sm)'
+            }}>
+              Showing {((currentPage() - 1) * pageSize) + 1}-{Math.min(currentPage() * pageSize, largeUserList.length)} of {largeUserList.length} users
+            </p>
+
+            <Pagination
+              page={currentPage()}
+              totalPages={totalPages()}
+              onPageChange={setCurrentPage}
+              size="compact"
+              variant="primary"
+            />
+          </div>
+        </div>
       </Card>
     </>
   );
