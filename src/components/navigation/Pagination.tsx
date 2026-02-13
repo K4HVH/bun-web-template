@@ -35,8 +35,14 @@ export const Pagination: Component<PaginationProps> = (props) => {
 
   const variant = () => local.variant ?? 'secondary';
   const size = () => local.size ?? 'normal';
-  const showFirstLast = () => local.showFirstLast ?? true;
-  const showPrevNext = () => local.showPrevNext ?? true;
+  const shouldShowFirstLast = () => {
+    // Explicitly handle false value (default to true)
+    return local.showFirstLast !== false;
+  };
+  const shouldShowPrevNext = () => {
+    // Explicitly handle false value (default to true)
+    return local.showPrevNext !== false;
+  };
   const siblingCount = () => local.siblingCount ?? 1;
 
   // Calculate which page numbers to show
@@ -125,7 +131,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
     <nav class={classNames()} aria-label="Pagination" {...rest}>
       <div class="pagination__container">
         {/* First page button */}
-        <Show when={showFirstLast()}>
+        <Show when={shouldShowFirstLast()}>
           <button
             type="button"
             class="pagination__button pagination__button--first"
@@ -138,7 +144,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
         </Show>
 
         {/* Previous page button */}
-        <Show when={showPrevNext()}>
+        <Show when={shouldShowPrevNext()}>
           <button
             type="button"
             class="pagination__button pagination__button--prev"
@@ -180,7 +186,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
         </div>
 
         {/* Next page button */}
-        <Show when={showPrevNext()}>
+        <Show when={shouldShowPrevNext()}>
           <button
             type="button"
             class="pagination__button pagination__button--next"
@@ -193,7 +199,7 @@ export const Pagination: Component<PaginationProps> = (props) => {
         </Show>
 
         {/* Last page button */}
-        <Show when={showFirstLast()}>
+        <Show when={shouldShowFirstLast()}>
           <button
             type="button"
             class="pagination__button pagination__button--last"

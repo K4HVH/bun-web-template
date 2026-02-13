@@ -6,7 +6,7 @@ Comprehensive reference for the SolidJS component library. Combines the componen
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 20 components in this SolidJS design system, organized by category.
+A comprehensive reference for all 24 components in this SolidJS design system, organized by category.
 
 ---
 
@@ -1186,6 +1186,345 @@ notify({
 **Testing Notes**
 
 All notification containers are rendered via `Portal`. Query `document` directly. The hook `useNotification` must be called within a `NotificationProvider`. Notifications have a 300ms slide-in/out animation.
+
+---
+
+### FieldError
+
+A simple component that displays a field validation error message with an icon. Used standalone or within FormField. Conditionally renders based on the error prop using SolidJS Show component.
+
+**Props Interface**
+
+```typescript
+interface FieldErrorProps {
+  error?: string;      // Error message to display; component hidden if undefined
+  class?: string;      // Additional CSS classes
+}
+```
+
+**Variants and States**
+
+- **Visibility**: Only renders when `error` prop is truthy (non-empty string)
+- **Icon**: Displays `BsExclamationCircle` icon from solid-icons/bs
+- **Message**: Error text displayed in `.field-error__message` span
+
+**Usage Example**
+
+```tsx
+import { FieldError } from '../components/feedback/FieldError';
+
+{/* Standalone usage */}
+<FieldError error="Email is required" />
+
+{/* Conditional error */}
+<FieldError error={form.errors.username} />
+
+{/* Hidden when no error */}
+<FieldError error={undefined} />  {/* Renders nothing */}
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.field-error` | Container (flex row with gap) |
+| `.field-error__message` | Error message text |
+
+**Testing Notes**
+
+This component uses `Show` for conditional rendering. When `error` is falsy, the component renders nothing and `.field-error` will not exist in the DOM.
+
+---
+
+### Form
+
+A form wrapper component that prevents default submit behavior and handles async onSubmit. Works seamlessly with the useForm hook for validation and state management.
+
+**Props Interface**
+
+```typescript
+interface FormProps extends Omit<JSX.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+  onSubmit?: (e: SubmitEvent) => void | Promise<void>;  // Async supported
+  children: JSX.Element;
+  class?: string;
+}
+```
+
+**Behavior**
+
+- **Submit handling**: Prevents default submit behavior (prevents page reload)
+- **Async support**: onSubmit handler can return a Promise for async operations
+- **Props forwarding**: All standard form HTML attributes are forwarded (except onSubmit which is redefined)
+
+**Usage Example**
+
+```tsx
+import { Form } from '../components/feedback/Form';
+import { useForm } from '../utils/useForm';
+
+const form = useForm({
+  initialValues: { email: '', password: '' },
+  validate: (values) => {
+    const errors = {};
+    if (!values.email) errors.email = 'Required';
+    return errors;
+  },
+  onSubmit: async (values) => {
+    await api.login(values);
+  },
+});
+
+<Form onSubmit={form.handleSubmit}>
+  {/* Form fields */}
+  <button type="submit">Submit</button>
+</Form>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.form` | Base form class |
+
+**Testing Notes**
+
+The component always calls `e.preventDefault()` on submit. When testing, verify that the onSubmit handler receives the submit event.
+
+---
+
+### FormField
+
+A form field container that provides consistent layout for labels, input controls, and error messages. Displays an optional label with required asterisk, wraps children in a control container, and shows errors via FieldError component.
+
+**Props Interface**
+
+```typescript
+interface FormFieldProps {
+  label?: string;       // Field label text
+  error?: string;       // Error message (passed to FieldError)
+  required?: boolean;   // Shows required asterisk (*)
+  children: JSX.Element;  // Input control (TextField, Checkbox, etc.)
+  class?: string;       // Additional CSS classes
+}
+```
+
+**Layout Structure**
+
+```
+.form-field
+├── .form-field__label (if label provided)
+│   ├── {label text}
+│   └── .form-field__required (if required=true) → "*"
+├── .form-field__control
+│   └── {children}
+└── FieldError (if error provided)
+```
+
+**Variants and States**
+
+- **Label**: Only renders label element when `label` prop is provided
+- **Required asterisk**: Red asterisk (*) shown after label text when `required` is true
+- **Error display**: Passes `error` prop to FieldError component (conditionally renders)
+
+**Usage Example**
+
+```tsx
+import { FormField } from '../components/feedback/FormField';
+import { TextField } from '../components/inputs/TextField';
+
+{/* Complete field with label, required asterisk, and error */}
+<FormField label="Email" error={form.errors.email} required>
+  <TextField
+    type="email"
+    value={form.values.email}
+    onChange={form.handleChange('email')}
+    onBlur={form.handleBlur('email')}
+    invalid={!!form.errors.email}
+  />
+</FormField>
+
+{/* Field without label */}
+<FormField error={form.errors.acceptTerms}>
+  <Checkbox
+    checked={form.values.acceptTerms}
+    onChange={(e) => form.handleChange('acceptTerms')(e.currentTarget.checked)}
+    label="I accept the terms"
+  />
+</FormField>
+
+{/* Simple field without error */}
+<FormField label="Bio">
+  <TextField multiline value={bio()} onChange={setBio} />
+</FormField>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.form-field` | Container (flex column) |
+| `.form-field__label` | Label element |
+| `.form-field__required` | Required asterisk span (red text) |
+| `.form-field__control` | Input control wrapper |
+
+**Testing Notes**
+
+FormField renders error via the FieldError component. Label and required asterisk are conditionally rendered via SolidJS `Show`.
+
+---
+
+## Form Management (useForm Hook)
+
+The `useForm` hook provides comprehensive form state management, validation, and submission handling. It supports field-level tracking, async submission, and progressive error display (errors only shown after first submit or blur).
+
+**Hook Signature**
+
+```typescript
+function useForm<T extends Record<string, any>>(
+  options: UseFormOptions<T>
+): UseFormReturn<T>
+```
+
+**Options Interface**
+
+```typescript
+interface UseFormOptions<T> {
+  initialValues: T;                          // Required - initial form state
+  validate?: (values: T) => FormErrors<T>;   // Optional - validation function
+  onSubmit: (values: T) => void | Promise<void>;  // Required - submit handler (async supported)
+}
+
+type FormErrors<T> = {
+  [K in keyof T]?: string;  // Error message for each field
+};
+```
+
+**Return Interface**
+
+```typescript
+interface UseFormReturn<T> {
+  // State (reactive getters)
+  values: T;                                    // Current form values
+  errors: FormErrors<T>;                        // Display errors (filtered by touched/submitted)
+  touched: Partial<Record<keyof T, boolean>>;   // Fields that have been blurred
+  isSubmitting: boolean;                        // True during async submit
+  hasSubmitted: boolean;                        // True after first submit attempt
+
+  // Handlers
+  handleChange: (field: keyof T) => (value: any) => void;
+  handleBlur: (field: keyof T) => () => void;
+  handleSubmit: (e?: SubmitEvent) => Promise<void>;
+
+  // Programmatic control
+  setFieldValue: (field: keyof T, value: any) => void;
+  setFieldError: (field: keyof T, error: string) => void;
+  reset: () => void;
+}
+```
+
+**Validation Behavior**
+
+1. **Before first submit**: Validation runs but errors are NOT displayed (even if present)
+2. **On submit**: Validation runs, all fields marked as touched, errors displayed, submit blocked if errors exist
+3. **After first submit**: Validation runs on every change and blur, errors displayed immediately
+
+This progressive disclosure prevents overwhelming users with errors before they've attempted to submit.
+
+**Form State Lifecycle**
+
+```
+Initial State → User Input → First Submit → Re-validation on Change/Blur
+    ↓              ↓              ↓                    ↓
+touched: {}    touched: {}    touched: all        touched: all
+errors: {}     errors: {}     errors: shown       errors: shown (live)
+```
+
+**Usage Example**
+
+```tsx
+import { useForm } from '../utils/useForm';
+import { Form } from '../components/feedback/Form';
+import { FormField } from '../components/feedback/FormField';
+import { TextField } from '../components/inputs/TextField';
+import { Button } from '../components/inputs/Button';
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+const form = useForm<LoginForm>({
+  initialValues: {
+    email: '',
+    password: '',
+  },
+  validate: (values) => {
+    const errors: FormErrors<LoginForm> = {};
+
+    if (!values.email) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+      errors.email = 'Invalid email format';
+    }
+
+    if (!values.password) {
+      errors.password = 'Password is required';
+    } else if (values.password.length < 8) {
+      errors.password = 'Password must be at least 8 characters';
+    }
+
+    return errors;
+  },
+  onSubmit: async (values) => {
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('Login:', values);
+  },
+});
+
+<Form onSubmit={form.handleSubmit}>
+  <FormField label="Email" error={form.errors.email} required>
+    <TextField
+      type="email"
+      value={form.values.email}
+      onChange={form.handleChange('email')}
+      onBlur={form.handleBlur('email')}
+      invalid={!!form.errors.email}
+    />
+  </FormField>
+
+  <FormField label="Password" error={form.errors.password} required>
+    <TextField
+      type="password"
+      value={form.values.password}
+      onChange={form.handleChange('password')}
+      onBlur={form.handleBlur('password')}
+      invalid={!!form.errors.password}
+    />
+  </FormField>
+
+  <Button type="submit" loading={form.isSubmitting}>
+    Login
+  </Button>
+
+  <Button type="button" variant="secondary" onClick={form.reset}>
+    Reset
+  </Button>
+</Form>
+```
+
+**Key Features**
+
+- **Reactive state**: All state values are reactive SolidJS signals (accessed via getters)
+- **Type-safe**: Full TypeScript support with generic form values type
+- **Async submit**: Automatically manages `isSubmitting` state during async operations
+- **Error display logic**: Smart error filtering - only shows errors for touched fields or after submit
+- **Programmatic control**: `setFieldValue`, `setFieldError` for custom logic
+- **Reset functionality**: Clears all state and returns to initial values
+
+**Testing Notes**
+
+The `errors` getter returns filtered errors (display errors). Internal validation may produce errors that aren't yet visible to the user. Test both the validation logic and the display behavior separately.
 
 ---
 

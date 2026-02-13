@@ -1,10 +1,10 @@
 # Homepage v2
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 20 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 24 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **21 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **24 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -67,6 +67,9 @@ User feedback and dialog components.
 | Component | Description |
 |-----------|-------------|
 | **Dialog** | Modal dialog overlay |
+| **FieldError** | Displays field validation error with icon |
+| **Form** | Form wrapper with validation and submit handling |
+| **FormField** | Form field container with label and error display |
 | **Notification** | Toast notifications with provider context |
 
 ### Surfaces
@@ -99,18 +102,19 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 20 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, etc.)
+│       └── demos/              # 21 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
-│   ├── feedback/               # Dialog, Notification
+│   ├── feedback/               # Dialog, FieldError, Form, FormField, Notification
 │   ├── surfaces/               # Card, GridBackground
 │   └── navigation/             # Menu, Pane, Tabs
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files
 └── utils/
-    └── cssVariables.ts         # CSS variable utilities
+    ├── cssVariables.ts         # CSS variable utilities
+    └── useForm.ts              # Form validation and state management hook
 
 tests/
 ├── unit/                       # Vitest component tests

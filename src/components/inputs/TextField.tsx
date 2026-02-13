@@ -25,6 +25,9 @@ interface TextFieldProps {
   class?: string;
   name?: string;
   id?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
 }
 
 export const TextField: Component<TextFieldProps> = (props) => {
@@ -51,6 +54,9 @@ export const TextField: Component<TextFieldProps> = (props) => {
     'class',
     'name',
     'id',
+    'aria-describedby',
+    'aria-required',
+    'aria-labelledby',
   ]);
 
   const size = () => local.size ?? 'normal';
@@ -187,6 +193,9 @@ export const TextField: Component<TextFieldProps> = (props) => {
               onInput={handleInput}
               onBlur={handleBlur}
               aria-invalid={local.invalid || !!local.error}
+              aria-describedby={local['aria-describedby']}
+              aria-required={local['aria-required']}
+              aria-labelledby={local['aria-labelledby']}
             />
           }
         >
@@ -203,6 +212,9 @@ export const TextField: Component<TextFieldProps> = (props) => {
             onInput={handleInput}
             onBlur={handleBlur}
             aria-invalid={local.invalid || !!local.error}
+            aria-describedby={local['aria-describedby']}
+            aria-required={local['aria-required']}
+            aria-labelledby={local['aria-labelledby']}
             style={{ resize: local.maxRows ? 'none' : 'vertical' }}
           />
         </Show>

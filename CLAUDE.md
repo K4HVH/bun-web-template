@@ -50,12 +50,12 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 20 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, etc.)
+      demos/                # 21 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (8 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (5 components)
-    feedback/               # User feedback (2 components)
+    feedback/               # User feedback (5 components)
     navigation/             # Navigation patterns (3 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
@@ -64,8 +64,8 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (19 test files)
-  e2e/                      # Playwright e2e tests (7 spec files)
+  unit/                     # Vitest unit tests (23 test files)
+  e2e/                      # Playwright e2e tests (8 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -100,6 +100,9 @@ src/components/
     Tooltip.tsx              # Hover/focus tooltip via Portal. Placement: top (default), bottom, left, right with auto-flip. Show/hide delays with fade animation.
   feedback/                  # User feedback
     Dialog.tsx               # Modal dialog via Portal over Card. Sizes: small, medium (default), large, fullscreen. Backdrop/escape dismiss. Exports DialogHeader, DialogFooter.
+    FieldError.tsx           # Displays field validation error with icon. Conditionally renders based on error prop. Used standalone or within FormField.
+    Form.tsx                 # Form wrapper component. Prevents default submit, supports async onSubmit handler. Works with useForm hook for validation and state management.
+    FormField.tsx            # Form field container. Displays label, required asterisk, error message via FieldError. Wraps input controls with consistent layout.
     Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (default), top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
   navigation/                # Navigation patterns
     Menu.tsx                 # Dropdown/context menu via Portal. Triggers: click, contextmenu, both. Auto-positioning with flip. Anchored (follows trigger on scroll) or unanchored. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Supports nested submenus with hover. Exports MenuItem, MenuSeparator.
@@ -141,6 +144,61 @@ const dropdown = document.querySelector('.dropdown');
 - **Multi**: `multiple={true}`, `value?: string[]`, `onChange?: (value: string[]) => void`
 
 Multi-select renders `Checkbox` components internally for each option. Chips with remove buttons display selected values.
+
+### Form Management
+
+The form system provides controlled form handling with validation, error display, and submission management via the `useForm` hook.
+
+**useForm hook** (`src/utils/useForm.ts`):
+- **initialValues**: Set initial form values
+- **validate**: Optional function for form-wide validation, returns errors object
+- **onSubmit**: Handler called when form passes validation (async supported)
+
+**Returns**:
+- `values`: Current form values (reactive)
+- `errors`: Display errors (only shows for touched fields or after submit)
+- `touched`: Tracks which fields have been blurred
+- `isSubmitting`: True during async submit
+- `hasSubmitted`: True after first submit attempt
+- `handleChange(field)`: Returns change handler for field
+- `handleBlur(field)`: Returns blur handler for field
+- `handleSubmit`: Form submit handler
+- `setFieldValue`: Programmatically set field value
+- `setFieldError`: Programmatically set field error
+- `reset`: Reset form to initial state
+
+**Validation behavior**:
+- Errors are validated on submit
+- After first submit, re-validates on change and blur
+- Before submit, no errors are displayed even if validation would fail
+- All fields marked as touched on submit
+
+**Usage pattern**:
+```typescript
+const form = useForm<FormValues>({
+  initialValues: { email: '', password: '' },
+  validate: (values) => {
+    const errors: FormErrors<FormValues> = {};
+    if (!values.email) errors.email = 'Email is required';
+    if (!values.password) errors.password = 'Password is required';
+    return errors;
+  },
+  onSubmit: async (values) => {
+    await api.submit(values);
+  },
+});
+
+// In JSX:
+<Form onSubmit={form.handleSubmit}>
+  <FormField label="Email" error={form.errors.email} required>
+    <TextField
+      value={form.values.email}
+      onChange={form.handleChange('email')}
+      onBlur={form.handleBlur('email')}
+    />
+  </FormField>
+</Form>
+```
 
 ## Design System
 

@@ -34,7 +34,7 @@ test.describe('Pagination component', () => {
   });
 
   // Skipping this test due to environmental issues - unit tests cover this functionality
-  test.skip('navigates to different page when button clicked', async ({ page }) => {
+  test('navigates to different page when button clicked', async ({ page }) => {
     // Scroll to top first
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(100);
@@ -46,21 +46,21 @@ test.describe('Pagination component', () => {
 
     const nav = basicCard.locator('nav[aria-label="Pagination"]');
 
-    // Wait for page 3 button to be available
-    const page3Button = nav.getByLabel('Go to page 3', { exact: true });
-    await expect(page3Button).toBeVisible();
+    // Wait for page 2 button to be available (page 2 is always visible when on page 1)
+    const page2Button = nav.getByLabel('Go to page 2', { exact: true });
+    await expect(page2Button).toBeVisible();
 
-    // Click page 3
-    await page3Button.click();
+    // Click page 2
+    await page2Button.click();
 
     // Wait for state update
     await page.waitForTimeout(200);
 
-    // Now page 3 should be active
-    await expect(nav.getByLabel('Go to page 3', { exact: true })).toHaveAttribute('aria-current', 'page');
+    // Now page 2 should be active
+    await expect(nav.getByLabel('Go to page 2', { exact: true })).toHaveAttribute('aria-current', 'page');
 
     // Current page text should update
-    await expect(basicCard.getByText('Current page: 3')).toBeVisible();
+    await expect(basicCard.getByText('Current page: 2')).toBeVisible();
   });
 
   test('prev and next buttons work correctly', async ({ page }) => {
@@ -171,10 +171,12 @@ test.describe('Pagination component', () => {
   });
 
   test('hides first/last buttons when showFirstLast is false', async ({ page }) => {
-    const card = page.locator('.card', { hasText: 'Without First/Last Buttons' });
+    const card = page.locator('.card', { hasText: 'Navigation Controls' });
     await card.scrollIntoViewIfNeeded();
 
-    const nav = card.locator('nav[aria-label="Pagination"]');
+    // Find the specific section by its heading and get the nav within that section only
+    const section = card.locator('h3:has-text("Without First/Last Buttons")').locator('..');
+    const nav = section.locator('nav[aria-label="Pagination"]');
 
     // First and last buttons should not be present
     await expect(nav.getByLabel('Go to first page')).not.toBeVisible();

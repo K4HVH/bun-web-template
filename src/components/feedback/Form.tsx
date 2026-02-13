@@ -17,8 +17,18 @@ export const Form: Component<FormProps> = (props) => {
     }
   };
 
+  const classNames = () => {
+    const classes = ['form'];
+
+    if (local.class) {
+      classes.push(local.class);
+    }
+
+    return classes.join(' ');
+  };
+
   return (
-    <form class={`form ${local.class || ''}`} onSubmit={handleSubmit} {...rest}>
+    <form class={classNames()} onSubmit={handleSubmit} {...rest}>
       {local.children}
     </form>
   );

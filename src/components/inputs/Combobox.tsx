@@ -26,6 +26,9 @@ interface ComboboxProps {
   error?: string;
   invalid?: boolean;
   class?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
 }
 
 export const Combobox: Component<ComboboxProps> = (props) => {
@@ -42,6 +45,9 @@ export const Combobox: Component<ComboboxProps> = (props) => {
     'error',
     'invalid',
     'class',
+    'aria-describedby',
+    'aria-required',
+    'aria-labelledby',
   ]);
 
   const [isOpen, setIsOpen] = createSignal(false);

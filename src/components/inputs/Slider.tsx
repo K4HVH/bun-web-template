@@ -23,6 +23,9 @@ interface SliderProps {
   error?: string;
   invalid?: boolean;
   class?: string;
+  'aria-describedby'?: string;
+  'aria-required'?: boolean;
+  'aria-labelledby'?: string;
 }
 
 export const Slider: Component<SliderProps> = (props) => {
@@ -42,6 +45,9 @@ export const Slider: Component<SliderProps> = (props) => {
     'error',
     'invalid',
     'class',
+    'aria-describedby',
+    'aria-required',
+    'aria-labelledby',
   ]);
 
   const min = () => local.min ?? 0;
