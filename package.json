@@ -1,7 +1,7 @@
 {
-  "name": "midnightui",
+  "name": "vite-template-solid",
   "version": "0.0.0",
-  "description": "A SolidJS component library with a dark Midnight theme",
+  "description": "",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -18,25 +18,22 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "license": "MIT",
-  "resolutions": {
-    "lru-cache": "^10.0.0"
-  },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.58.0",
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/bun": "^1.3.9",
-    "jsdom": "^28.0.0",
-    "solid-devtools": "^0.34.5",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vite-plugin-solid": "^2.11.10",
+    "@types/bun": "^1.3.6",
+    "jsdom": "^27.4.0",
+    "solid-devtools": "^0.34.3",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.4",
+    "vite-plugin-solid": "^2.11.8",
     "vitest": "^4.0.18"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.4",
     "canvas": "^3.2.1",
     "solid-icons": "^1.2.0",
-    "solid-js": "^1.9.11"
+    "solid-js": "^1.9.5"
   }
 }
