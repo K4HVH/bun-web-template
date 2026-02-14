@@ -25,6 +25,7 @@ import FormDemo from './pages/demos/FormDemo';
 import TableDemo from './pages/demos/TableDemo';
 import MenuDemo from './pages/demos/MenuDemo';
 import PaginationDemo from './pages/demos/PaginationDemo';
+import BreadcrumbsDemo from './pages/demos/BreadcrumbsDemo';
 
 const App: Component = () => {
   return (
@@ -54,6 +55,7 @@ const App: Component = () => {
           <Route path="table" component={TableDemo} />
           <Route path="menu" component={MenuDemo} />
           <Route path="pagination" component={PaginationDemo} />
+          <Route path="breadcrumbs" component={BreadcrumbsDemo} />
         </Route>
       </Router>
     </NotificationProvider>

@@ -1,10 +1,10 @@
 # Homepage v2
 
-A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 24 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
+A SolidJS component library and design system built with Vite and Bun. Features a dark "Midnight" theme with 25 components across 5 categories, comprehensive test coverage, and Docker containerized deployment.
 
 ## Features
 
-- **24 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
+- **25 components** across 5 categories (inputs, display, feedback, surfaces, navigation)
 - **Dark theme design system** using CSS custom properties ("Midnight" black and blue scheme)
 - **Unit testing** with Vitest and @solidjs/testing-library
 - **E2E testing** with Playwright across Chromium, Firefox, and WebKit
@@ -87,6 +87,7 @@ Page layout and navigation components.
 
 | Component | Description |
 |-----------|-------------|
+| **Breadcrumbs** | Navigation trail showing current page location within hierarchy |
 | **Menu** | Dropdown/context menu with nested submenus |
 | **Pagination** | Page navigation control with ellipsis support |
 | **Pane** | Collapsible side/top/bottom panel |
@@ -102,13 +103,13 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 21 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, etc.)
+│       └── demos/              # 22 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
 │   ├── feedback/               # Dialog, FieldError, Form, FormField, Notification
 │   ├── surfaces/               # Card, GridBackground
-│   └── navigation/             # Menu, Pane, Tabs
+│   └── navigation/             # Breadcrumbs, Menu, Pagination, Pane, Tabs
 ├── styles/
 │   ├── global.css              # Theme tokens and global styles
 │   └── components/             # Per-component CSS files

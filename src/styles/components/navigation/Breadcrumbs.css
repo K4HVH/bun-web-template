@@ -1,0 +1,268 @@
+/* =============================================================================
+   Breadcrumbs Component
+   ============================================================================= */
+
+.breadcrumbs {
+  display: inline-flex;
+}
+
+.breadcrumbs--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  gap: var(--g-spacing-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbs__item {
+  display: flex;
+  align-items: center;
+  gap: var(--g-spacing-sm);
+}
+
+/* Links - styled like buttons */
+.breadcrumbs__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  background: var(--g-background);
+  color: var(--g-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--g-transition);
+  white-space: nowrap;
+}
+
+/* Hover effect using ::before pseudo-element */
+.breadcrumbs__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  border-radius: var(--g-radius);
+  transition: background var(--g-transition);
+  pointer-events: none;
+}
+
+.breadcrumbs__link:hover {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.breadcrumbs__link:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.breadcrumbs__link:active::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Focus state */
+.breadcrumbs__link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Current page (last item) - non-clickable */
+.breadcrumbs__link--current {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Disabled link */
+.breadcrumbs__item--disabled .breadcrumbs__link {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Icon */
+.breadcrumbs__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-base);
+}
+
+/* Separator */
+.breadcrumbs__separator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--g-text-muted);
+  font-size: var(--font-size-sm);
+  user-select: none;
+}
+
+/* Ellipsis */
+.breadcrumbs__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  color: var(--g-text-muted);
+  font-size: var(--font-size-base);
+  user-select: none;
+}
+
+/* ============================================================================
+   Variant: Primary
+   ============================================================================ */
+
+.breadcrumbs--primary .breadcrumbs__link {
+  background: var(--g-button-primary);
+  border-color: transparent;
+  color: var(--color-white);
+}
+
+.breadcrumbs--primary .breadcrumbs__link:hover::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.breadcrumbs--primary .breadcrumbs__link:active::before {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumbs--primary .breadcrumbs__link--current {
+  background: var(--g-background-elevated);
+  border-color: var(--color-primary);
+  color: var(--g-text-primary);
+  font-weight: 600;
+}
+
+.breadcrumbs--primary .breadcrumbs__separator {
+  color: var(--color-primary);
+  opacity: 0.6;
+}
+
+/* ============================================================================
+   Variant: Secondary (default button-like styling)
+   ============================================================================ */
+
+.breadcrumbs--secondary .breadcrumbs__link {
+  border-color: var(--g-border-color);
+  background: var(--g-background);
+  color: var(--g-text-primary);
+}
+
+.breadcrumbs--secondary .breadcrumbs__link:hover {
+  border-color: var(--g-border-color-emphasis);
+}
+
+.breadcrumbs--secondary .breadcrumbs__link--current {
+  background: var(--g-background-elevated);
+  border-color: var(--color-primary);
+  color: var(--g-text-primary);
+  font-weight: 600;
+}
+
+.breadcrumbs--secondary .breadcrumbs__separator {
+  color: var(--g-text-muted);
+}
+
+/* ============================================================================
+   Variant: Subtle
+   ============================================================================ */
+
+.breadcrumbs--subtle .breadcrumbs__link {
+  background: transparent;
+  border-color: transparent;
+  color: var(--g-text-secondary);
+}
+
+.breadcrumbs--subtle .breadcrumbs__link:hover {
+  color: var(--g-text-primary);
+}
+
+.breadcrumbs--subtle .breadcrumbs__link:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.breadcrumbs--subtle .breadcrumbs__link:active::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.breadcrumbs--subtle .breadcrumbs__link--current {
+  background: var(--g-background-elevated);
+  border-color: var(--g-border-color-subtle);
+  color: var(--g-text-primary);
+  font-weight: 600;
+}
+
+.breadcrumbs--subtle .breadcrumbs__separator {
+  color: var(--g-text-muted);
+  opacity: 0.4;
+}
+
+/* ============================================================================
+   Size: Compact
+   ============================================================================ */
+
+.breadcrumbs--compact .breadcrumbs__list {
+  gap: var(--spacing-1);
+}
+
+.breadcrumbs--compact .breadcrumbs__item {
+  gap: var(--spacing-1);
+}
+
+.breadcrumbs--compact .breadcrumbs__link {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  gap: var(--spacing-1);
+}
+
+.breadcrumbs--compact .breadcrumbs__icon {
+  font-size: var(--font-size-sm);
+}
+
+.breadcrumbs--compact .breadcrumbs__separator {
+  font-size: var(--font-size-xs);
+}
+
+.breadcrumbs--compact .breadcrumbs__ellipsis {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+/* ============================================================================
+   Size: Spacious
+   ============================================================================ */
+
+.breadcrumbs--spacious .breadcrumbs__list {
+  gap: var(--g-spacing);
+}
+
+.breadcrumbs--spacious .breadcrumbs__item {
+  gap: var(--g-spacing);
+}
+
+.breadcrumbs--spacious .breadcrumbs__link {
+  padding: var(--spacing-3) var(--g-spacing);
+  font-size: var(--font-size-base);
+  gap: var(--spacing-3);
+}
+
+.breadcrumbs--spacious .breadcrumbs__icon {
+  font-size: var(--font-size-lg);
+}
+
+.breadcrumbs--spacious .breadcrumbs__separator {
+  font-size: var(--font-size-base);
+}
+
+.breadcrumbs--spacious .breadcrumbs__ellipsis {
+  padding: var(--spacing-3) var(--g-spacing);
+  font-size: var(--font-size-lg);
+}

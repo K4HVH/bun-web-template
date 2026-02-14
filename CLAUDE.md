@@ -50,13 +50,13 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 21 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, etc.)
+      demos/                # 22 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (8 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (5 components)
     feedback/               # User feedback (5 components)
-    navigation/             # Navigation patterns (3 components)
+    navigation/             # Navigation patterns (4 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
     components/{category}/  # Per-component CSS files (mirror component tree)
@@ -64,8 +64,8 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (23 test files)
-  e2e/                      # Playwright e2e tests (8 spec files)
+  unit/                     # Vitest unit tests (25 test files)
+  e2e/                      # Playwright e2e tests (10 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
 Dockerfile                   # Multi-stage build (Debian builder + Alpine runner)
@@ -282,7 +282,7 @@ The project uses CSS custom properties defined in `src/styles/global.css` with a
 
 ### Unit Tests (Vitest)
 
-- Located in `tests/unit/` (16 test files covering all components)
+- Located in `tests/unit/` (25 test files covering all components)
 - Config: `vitest.config.ts` -- jsdom environment, setup file imports `@testing-library/jest-dom`
 - Uses `@solidjs/testing-library` for component rendering
 - **All Portal-rendered content must be queried via `document`, not `container`** (affects Combobox, Slider tooltip, Tooltip, Dialog, Notification)
@@ -290,7 +290,7 @@ The project uses CSS custom properties defined in `src/styles/global.css` with a
 
 ### E2E Tests (Playwright)
 
-- Located in `tests/e2e/` (7 spec files)
+- Located in `tests/e2e/` (10 spec files)
 - Config: `playwright.config.ts` -- tests Chromium, Firefox, and WebKit
 - Uses `127.0.0.1` instead of `localhost` (critical for cross-browser compat)
 - Dev server auto-starts via `bun run dev --host 127.0.0.1` on port 3000

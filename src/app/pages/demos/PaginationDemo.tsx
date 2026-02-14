@@ -12,13 +12,8 @@ export default function PaginationDemo() {
   const [page7, setPage7] = createSignal(50);
 
   return (
-    <div style={{ padding: '2rem', display: 'flex', 'flex-direction': 'column', gap: '2rem' }}>
-      <div>
-        <h1>Pagination</h1>
-        <p style={{ color: 'var(--g-text-secondary)', 'margin-top': '0.5rem' }}>
-          Navigation control for paginated content with page numbers and first/last buttons.
-        </p>
-      </div>
+    <>
+      <h2>Pagination Component Examples</h2>
 
       {/* Basic Usage */}
       <Card>
@@ -203,6 +198,6 @@ export default function PaginationDemo() {
           </p>
         </div>
       </Card>
-    </div>
+    </>
   );
 }

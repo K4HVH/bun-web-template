@@ -18,7 +18,7 @@ test.describe('Pagination component', () => {
   });
 
   test('renders pagination with page numbers', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Pagination', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Pagination Component Examples', exact: true })).toBeVisible();
 
     // Wait for the basic pagination card
     const basicCard = page.locator('.card', { hasText: 'Basic Pagination' }).first();

@@ -6,7 +6,7 @@ Comprehensive reference for the SolidJS component library. Combines the componen
 
 # Part 1: Component Reference
 
-A comprehensive reference for all 24 components in this SolidJS design system, organized by category.
+A comprehensive reference for all 25 components in this SolidJS design system, organized by category.
 
 ---
 
@@ -1529,6 +1529,121 @@ The `errors` getter returns filtered errors (display errors). Internal validatio
 ---
 
 ## Navigation
+
+### Breadcrumbs
+
+A navigation trail component showing the current page location within a hierarchical structure. Integrates with @solidjs/router's `<A>` component for SPA navigation. Supports collapsing middle items with ellipsis, custom icons per item, and disabled states.
+
+**Props Interface**
+
+```typescript
+interface BreadcrumbItem {
+  label: string;
+  href: string;
+  icon?: Component;
+  disabled?: boolean;
+}
+
+interface BreadcrumbsProps {
+  items: BreadcrumbItem[];
+  variant?: 'primary' | 'secondary' | 'subtle';  // default: 'primary'
+  size?: 'compact' | 'normal' | 'spacious';      // default: 'normal'
+  separator?: Component;                          // default: BsChevronRight
+  maxItems?: number;                              // Collapse middle items if total exceeds this
+  disabled?: boolean;                             // Disable all items
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Variants**: `primary` (blue links, emphasized separators), `secondary` (standard gray links), `subtle` (muted appearance)
+- **Sizes**: `compact` (smaller padding/font), `normal`, `spacious` (larger padding/font)
+- **Current page**: Last item rendered as non-clickable `<span>` with `aria-current="page"`, not a link
+- **Collapsing**: When `maxItems` is set and item count exceeds it, middle items are collapsed with ellipsis. Shows first item, ellipsis, then last (maxItems - 1) items
+- **Disabled states**: Individual items can be disabled via `disabled` prop on BreadcrumbItem, or entire component via `disabled` prop
+- **Icons**: Each item can have an optional icon (useful for home icons, folder icons, etc.)
+- **Separator**: Chevron right (>) by default, customizable via `separator` prop
+- **Router integration**: Uses @solidjs/router's `<A>` component for SPA navigation with proper active link handling
+
+**Usage Example**
+
+```tsx
+import { Breadcrumbs, type BreadcrumbItem } from '../components/navigation/Breadcrumbs';
+import { BsHouseDoor, BsFolder } from 'solid-icons/bs';
+
+{/* Basic breadcrumbs */}
+const items: BreadcrumbItem[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  { label: 'Electronics', href: '/electronics' },
+  { label: 'Laptops', href: '/electronics/laptops' },
+];
+
+<Breadcrumbs items={items} />
+
+{/* With icons and custom variant */}
+const itemsWithIcons: BreadcrumbItem[] = [
+  { label: 'Home', href: '/', icon: BsHouseDoor },
+  { label: 'Documents', href: '/docs', icon: BsFolder },
+  { label: 'Work', href: '/docs/work', icon: BsFolder },
+  { label: 'Report.pdf', href: '/docs/work/report' },
+];
+
+<Breadcrumbs items={itemsWithIcons} variant="secondary" />
+
+{/* Collapsed with maxItems */}
+const longPath: BreadcrumbItem[] = [
+  { label: 'Root', href: '/', icon: BsHouseDoor },
+  { label: 'Level 1', href: '/l1' },
+  { label: 'Level 2', href: '/l2' },
+  { label: 'Level 3', href: '/l3' },
+  { label: 'Level 4', href: '/l4' },
+  { label: 'Current', href: '/current' },
+];
+
+{/* Shows: Root ... Level 3, Level 4, Current */}
+<Breadcrumbs items={longPath} maxItems={4} />
+
+{/* Individual item disabled */}
+const itemsWithDisabled: BreadcrumbItem[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products', disabled: true },
+  { label: 'Electronics', href: '/electronics' },
+];
+
+<Breadcrumbs items={itemsWithDisabled} />
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.breadcrumbs` | Base class |
+| `.breadcrumbs--primary`, `.breadcrumbs--secondary`, `.breadcrumbs--subtle` | Variant modifiers |
+| `.breadcrumbs--compact`, `.breadcrumbs--spacious` | Size modifiers |
+| `.breadcrumbs--disabled` | Disabled state for entire component |
+| `.breadcrumbs__list` | Ordered list (`<ol>`) container |
+| `.breadcrumbs__item` | List item (`<li>`) for each breadcrumb |
+| `.breadcrumbs__item--current` | Last item (current page) |
+| `.breadcrumbs__item--disabled` | Individual disabled item |
+| `.breadcrumbs__item--ellipsis` | Ellipsis item when collapsed |
+| `.breadcrumbs__link` | Link element (`<a>` or `<span>` for current) |
+| `.breadcrumbs__link--current` | Current page span (non-clickable) |
+| `.breadcrumbs__icon` | Icon wrapper |
+| `.breadcrumbs__label` | Text label wrapper |
+| `.breadcrumbs__separator` | Separator between items |
+| `.breadcrumbs__ellipsis` | Ellipsis character when collapsed |
+
+**Accessibility**
+
+- `<nav>` element with `aria-label="Breadcrumb"`
+- Ordered list (`<ol>`) structure for semantic hierarchy
+- Current page marked with `aria-current="page"`
+- Disabled links have `aria-disabled="true"` and prevent navigation
+- Separators marked with `aria-hidden="true"` to avoid screen reader clutter
+
+---
 
 ### Menu
 
