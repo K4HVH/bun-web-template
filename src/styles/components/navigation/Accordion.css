@@ -1,0 +1,227 @@
+/* =============================================================================
+   Accordion Component
+   ============================================================================= */
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--g-spacing-xs);
+}
+
+/* =============================================================================
+   Accordion Item
+   ============================================================================= */
+
+.accordion__item {
+  border: var(--g-border-width) solid var(--g-border-color);
+  border-radius: var(--g-radius);
+  overflow: hidden;
+  transition: border-color var(--g-transition);
+}
+
+.accordion__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Accordion Header
+   ============================================================================= */
+
+.accordion__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--g-spacing);
+  width: 100%;
+  padding: var(--g-spacing);
+  background: var(--g-background);
+  border: none;
+  color: var(--g-text-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--g-transition);
+  font-family: inherit;
+  user-select: none;
+}
+
+.accordion__header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--g-transition);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.accordion__header:hover:not(:disabled)::before {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.accordion__header:active:not(:disabled)::before {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.accordion__header:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.accordion__header:disabled {
+  cursor: not-allowed;
+}
+
+.accordion__header:disabled::before {
+  background: rgba(255, 255, 255, 0);
+}
+
+.accordion__custom-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  color: var(--g-text-secondary);
+}
+
+.accordion__title {
+  flex: 1;
+}
+
+.accordion__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  color: var(--g-text-secondary);
+  transition: transform var(--g-transition);
+  transform: rotate(0deg);
+}
+
+.accordion__icon--expanded {
+  transform: rotate(90deg);
+}
+
+/* =============================================================================
+   Accordion Content
+   ============================================================================= */
+
+.accordion__content {
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: max-height var(--g-transition), opacity var(--g-transition), visibility 0s var(--g-transition);
+  opacity: 0;
+}
+
+.accordion__content--expanded {
+  max-height: 2000px;
+  opacity: 1;
+  visibility: visible;
+  transition: max-height var(--g-transition), opacity var(--g-transition);
+}
+
+/* Disable animations in exclusive mode */
+.accordion--exclusive .accordion__content {
+  transition: none;
+}
+
+.accordion--exclusive .accordion__content--expanded {
+  transition: none;
+}
+
+.accordion__content-inner {
+  padding: var(--g-spacing);
+  color: var(--g-text-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+}
+
+.accordion__content-inner > *:first-child {
+  margin-top: 0;
+}
+
+.accordion__content-inner > *:last-child {
+  margin-bottom: 0;
+}
+
+/* =============================================================================
+   Size Variants
+   ============================================================================= */
+
+/* Compact */
+.accordion--compact .accordion__header {
+  padding: var(--g-spacing-sm);
+  gap: var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.accordion--compact .accordion__content-inner {
+  padding: var(--g-spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.accordion--compact .accordion__custom-icon,
+.accordion--compact .accordion__icon {
+  font-size: var(--font-size-base);
+}
+
+/* Spacious */
+.accordion--spacious .accordion__header {
+  padding: var(--g-spacing-lg);
+  gap: var(--g-spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.accordion--spacious .accordion__content-inner {
+  padding: var(--g-spacing-lg);
+  font-size: var(--font-size-base);
+}
+
+.accordion--spacious .accordion__custom-icon,
+.accordion--spacious .accordion__icon {
+  font-size: var(--font-size-xl);
+}
+
+/* =============================================================================
+   Visual Variants
+   ============================================================================= */
+
+/* Default - standard border */
+.accordion--default .accordion__item {
+  border-color: var(--g-border-color);
+}
+
+.accordion--default .accordion__item--expanded {
+  border-color: var(--color-primary);
+}
+
+/* Emphasized - accent border and background */
+.accordion--emphasized .accordion__item {
+  border-color: var(--g-border-color-emphasis);
+  background: var(--g-background-elevated);
+}
+
+.accordion--emphasized .accordion__item--expanded {
+  border-color: var(--color-accent);
+}
+
+.accordion--emphasized .accordion__header {
+  background: var(--g-background-elevated);
+}
+
+/* Subtle - minimal styling */
+.accordion--subtle .accordion__item {
+  border-color: var(--g-border-color-subtle);
+  background: transparent;
+}
+
+.accordion--subtle .accordion__item--expanded {
+  border-color: var(--g-border-color);
+}
+
+.accordion--subtle .accordion__header {
+  background: transparent;
+}

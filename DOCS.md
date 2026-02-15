@@ -1556,6 +1556,132 @@ The `errors` getter returns filtered errors (display errors). Internal validatio
 
 ## Navigation
 
+### Accordion
+
+An expandable/collapsible content component for organizing information into sections. Supports both exclusive (single item expanded) and non-exclusive (multiple items expanded) modes, with controlled and uncontrolled state management. Items can include custom icons and be individually disabled.
+
+**Props Interface**
+
+```typescript
+interface AccordionItemConfig {
+  value: string;
+  title: string | JSX.Element;
+  content: JSX.Element;
+  icon?: Component;
+  disabled?: boolean;
+}
+
+interface AccordionProps {
+  items?: AccordionItemConfig[];   // Array-based configuration
+  children?: JSX.Element;           // Or use AccordionItem children
+  value?: string[];                 // Controlled expanded items
+  defaultValue?: string[];          // Uncontrolled default expanded items
+  onChange?: (value: string[]) => void;
+  exclusive?: boolean;              // Only one item open at a time (default: true)
+  variant?: 'default' | 'emphasized' | 'subtle';  // default: 'default'
+  size?: 'compact' | 'normal' | 'spacious';       // default: 'normal'
+  class?: string;
+}
+
+interface AccordionItemProps {
+  value: string;                    // Unique identifier
+  title: string | JSX.Element;      // Header content
+  icon?: Component;                 // Custom icon (from solid-icons)
+  disabled?: boolean;               // Prevent expansion
+  children: JSX.Element;            // Collapsed content
+  class?: string;
+}
+```
+
+**Variants and States**
+
+- **Expansion modes**:
+  - `exclusive={true}` (default) - Only one item can be expanded at a time, clicking another automatically collapses the current
+  - `exclusive={false}` - Multiple items can be expanded simultaneously
+- **Controlled/uncontrolled**:
+  - Controlled: Provide `value` and `onChange` props to manage state externally
+  - Uncontrolled: Use `defaultValue` for initial state, component manages internally
+- **Variants**:
+  - `default` - Standard border, primary color on expansion
+  - `emphasized` - Accent borders and elevated background for prominence
+  - `subtle` - Minimal borders and transparent background
+- **Sizes**:
+  - `compact` - Reduced padding, smaller fonts
+  - `normal` - Standard sizing
+  - `spacious` - Generous padding, larger fonts
+- **Item states**:
+  - Expanded: Shows content with smooth animation, rotates chevron icon 90°
+  - Collapsed: Hides content
+  - Disabled: Cannot be toggled, reduced opacity
+- **Accessibility**: Full keyboard support (Enter/Space to toggle), ARIA attributes (`aria-expanded`, `aria-disabled`)
+
+**Usage Examples**
+
+```tsx
+import { Accordion, AccordionItem } from '../components/navigation/Accordion';
+
+// Array-based configuration
+<Accordion
+  items={[
+    { value: 'intro', title: 'Introduction', content: <p>Welcome...</p> },
+    { value: 'features', title: 'Features', content: <ul>...</ul> },
+  ]}
+  defaultValue={['intro']}
+/>
+
+// Children-based (more flexible)
+<Accordion exclusive={false} defaultValue={['q1', 'q2']}>
+  <AccordionItem value="q1" title="What is SolidJS?">
+    <p>SolidJS is a declarative UI framework...</p>
+  </AccordionItem>
+  <AccordionItem value="q2" title="Why use MidnightUI?">
+    <p>Comprehensive component library...</p>
+  </AccordionItem>
+</Accordion>
+
+// With custom icons
+<Accordion>
+  <AccordionItem value="account" title="Account Settings" icon={BsPerson}>
+    <p>Manage your account...</p>
+  </AccordionItem>
+  <AccordionItem value="privacy" title="Privacy" icon={BsLock} disabled>
+    <p>Coming soon...</p>
+  </AccordionItem>
+</Accordion>
+
+// Controlled mode
+const [expanded, setExpanded] = createSignal(['item1']);
+
+<Accordion
+  value={expanded()}
+  onChange={setExpanded}
+  exclusive
+>
+  <AccordionItem value="item1" title="Item One">...</AccordionItem>
+  <AccordionItem value="item2" title="Item Two">...</AccordionItem>
+</Accordion>
+```
+
+**Key CSS Classes**
+
+| Class | Description |
+|---|---|
+| `.accordion` | Container element |
+| `.accordion--default` / `--emphasized` / `--subtle` | Variant modifiers |
+| `.accordion--compact` / `--spacious` | Size modifiers |
+| `.accordion__item` | Individual accordion item |
+| `.accordion__item--expanded` | Expanded item state |
+| `.accordion__item--disabled` | Disabled item state |
+| `.accordion__header` | Clickable header button |
+| `.accordion__custom-icon` | Custom icon container |
+| `.accordion__title` | Title text |
+| `.accordion__icon` | Expand/collapse chevron |
+| `.accordion__icon--expanded` | Rotated chevron (90°) |
+| `.accordion__content` | Content wrapper (animated) |
+| `.accordion__content-inner` | Inner content with padding |
+
+---
+
 ### Breadcrumbs
 
 A navigation trail component showing the current page location within a hierarchical structure. Integrates with @solidjs/router's `<A>` component for SPA navigation. Supports collapsing middle items with ellipsis, custom icons per item, and disabled states.

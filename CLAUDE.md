@@ -50,13 +50,13 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 22 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, etc.)
+      demos/                # 23 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, AccordionDemo.tsx, etc.)
   components/
     inputs/                 # Interactive form controls (7 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (5 components)
     feedback/               # User feedback (6 components)
-    navigation/             # Navigation patterns (5 components)
+    navigation/             # Navigation patterns (6 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
     components/{category}/  # Per-component CSS files (mirror component tree)
@@ -64,7 +64,7 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (26 test files)
+  unit/                     # Vitest unit tests (27 test files)
   e2e/                      # Playwright e2e tests (10 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -105,6 +105,7 @@ src/components/
     Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
     Progress.tsx             # Progress indicator. Types: linear (bar), circular (radial). Modes: determinate (0-100%), indeterminate (loading animation). Variants: primary, success, warning, error. Sizes: sm, normal, lg. Optional showLabel for percentage display.
   navigation/                # Navigation patterns
+    Accordion.tsx            # Expandable content sections. Exclusive/non-exclusive modes. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Custom icons, disabled items. Exports AccordionItem.
     Breadcrumbs.tsx          # Breadcrumb navigation. Separator customization, max items with collapse, icon support.
     Menu.tsx                 # Dropdown/context menu via Portal. Triggers: click, contextmenu, both. Auto-positioning with flip. Anchored (follows trigger on scroll) or unanchored. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Supports nested submenus with hover. Exports MenuItem, MenuSeparator.
     Pagination.tsx           # Page navigation control. Controlled via page/onPageChange. Variants: primary, secondary, subtle. Sizes: compact, normal, spacious. Features: page numbers with ellipsis, first/last buttons (toggleable), prev/next buttons (toggleable), configurable siblingCount for page density.

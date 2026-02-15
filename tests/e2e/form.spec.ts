@@ -257,8 +257,8 @@ test.describe('Form behavior', () => {
       }
     });
 
-    // Should show spinner during submission
-    await expect(page.locator('.spinner')).toBeVisible({ timeout: 500 });
+    // Should show progress indicator during submission
+    await expect(page.locator('.progress')).toBeVisible({ timeout: 500 });
   });
 
   test('reset button clears form', async ({ page }) => {
