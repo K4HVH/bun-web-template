@@ -414,41 +414,67 @@ The tooltip is rendered via `Portal`. Query `document` directly to find `.slider
 
 ---
 
-### Spinner
+### Progress
 
-A minimal animated loading spinner rendered as a rotating bordered circle. Inherits `currentColor` for the border, making it adaptable to its parent context.
+A versatile progress indicator component supporting both linear (horizontal bar) and circular (radial) display modes. Supports determinate progress (0-100%) and indeterminate loading states, with optional percentage labels and multiple color variants.
 
 **Props Interface**
 
 ```typescript
-interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
-  size?: 'sm' | 'normal' | 'lg';  // default: 'normal'
+interface ProgressProps extends JSX.HTMLAttributes<HTMLDivElement> {
+  type?: 'linear' | 'circular';                        // default: 'circular'
+  value?: number;                                       // 0-100, undefined = indeterminate
+  variant?: 'primary' | 'success' | 'warning' | 'error'; // default: 'primary'
+  size?: 'sm' | 'normal' | 'lg';                       // default: 'normal'
+  showLabel?: boolean;                                  // default: false
+  label?: string;                                       // custom label text
 }
 ```
 
 **Variants and States**
 
-- **Sizes**: `sm` (12px), `normal` (16px), `lg` (20px)
-- Renders as a `<span>` element
-- Animation: 0.6s linear infinite rotation
+- **Types**: `linear` (horizontal bar), `circular` (radial/spinner)
+- **Modes**: Determinate (value 0-100) or indeterminate (value undefined)
+- **Variants**: `primary`, `success`, `warning`, `error`
+- **Sizes**: `sm`, `normal`, `lg`
+- **Labels**: Optional percentage display or custom text
 
-**Usage Example**
+**Usage Examples**
 
 ```tsx
-import { Spinner } from '../components/inputs/Spinner';
+import { Progress } from '../components/feedback/Progress';
 
-<Spinner />
-<Spinner size="sm" />
-<Spinner size="lg" />
+// Circular indeterminate (replaces Spinner)
+<Progress type="circular" />
+
+// Linear progress bar with percentage
+<Progress type="linear" value={75} showLabel />
+
+// Circular determinate with label
+<Progress type="circular" value={60} showLabel variant="success" />
+
+// Linear indeterminate loading bar
+<Progress type="linear" variant="primary" />
+
+// Custom label
+<Progress type="linear" value={50} label="50 of 100 items" />
 ```
 
 **Key CSS Classes**
 
 | Class | Description |
 |---|---|
-| `.spinner` | Base class (16px default) |
-| `.spinner--sm` | Small size (12px) |
-| `.spinner--lg` | Large size (20px) |
+| `.progress` | Base wrapper |
+| `.progress--linear` | Linear bar mode |
+| `.progress--circular` | Circular radial mode |
+| `.progress--indeterminate` | Animated loading state |
+| `.progress--primary` / `--success` / `--warning` / `--error` | Color variants |
+| `.progress--sm` / `--lg` | Size modifiers |
+| `.progress__track` | Linear track container |
+| `.progress__fill` | Linear fill bar |
+| `.progress__svg` | Circular SVG container |
+| `.progress__circle` | Circular progress path |
+| `.progress__label` | Percentage/text label |
 
 ---
 
@@ -2652,7 +2678,7 @@ Routing is handled by `@solidjs/router` (v0.15.4), configured in `src/app/App.ts
 | `/slider` | `SliderDemo` | Slider examples |
 | `/button` | `ButtonDemo` | Button examples |
 | `/buttongroup` | `ButtonGroupDemo` | ButtonGroup examples |
-| `/spinner` | `SpinnerDemo` | Spinner examples |
+| `/progress` | `ProgressDemo` | Progress examples |
 | `/dialog` | `DialogDemo` | Dialog examples |
 | `/notification` | `NotificationDemo` | Notification examples |
 | `/tooltip` | `TooltipDemo` | Tooltip examples |
@@ -2675,7 +2701,7 @@ src/
     App.tsx                          -- Root component with Router, nested routes, providers
     pages/
       Test.tsx                       -- Layout shell: sidebar Pane + Tabs nav, renders routed children
-      demos/                         -- 18 individual demo files
+      demos/                         -- 22 individual demo files
         TypographyDemo.tsx
         TextFieldDemo.tsx
         CardDemo.tsx
@@ -2686,7 +2712,7 @@ src/
         SliderDemo.tsx
         ButtonDemo.tsx
         ButtonGroupDemo.tsx
-        SpinnerDemo.tsx
+        ProgressDemo.tsx
         DialogDemo.tsx
         NotificationDemo.tsx
         TooltipDemo.tsx
@@ -2694,6 +2720,11 @@ src/
         AvatarDemo.tsx
         TabsDemo.tsx
         PaneDemo.tsx
+        FormDemo.tsx
+        TableDemo.tsx
+        MenuDemo.tsx
+        PaginationDemo.tsx
+        BreadcrumbsDemo.tsx
   components/
     display/                         -- Data presentation components
       Avatar.tsx
@@ -2702,7 +2733,11 @@ src/
       Tooltip.tsx
     feedback/                        -- User feedback components
       Dialog.tsx
+      FieldError.tsx
+      Form.tsx
+      FormField.tsx
       Notification.tsx
+      Progress.tsx
     inputs/                          -- Interactive form controls
       Button.tsx
       ButtonGroup.tsx
@@ -2710,7 +2745,6 @@ src/
       Combobox.tsx
       RadioGroup.tsx
       Slider.tsx
-      Spinner.tsx
       TextField.tsx
     navigation/                      -- Navigation components
       Pane.tsx
@@ -2728,7 +2762,11 @@ src/
         Tooltip.css
       feedback/
         Dialog.css
+        FieldError.css
+        Form.css
+        FormField.css
         Notification.css
+        Progress.css
       inputs/
         Button.css
         ButtonGroup.css
@@ -2736,7 +2774,6 @@ src/
         Combobox.css
         RadioGroup.css
         Slider.css
-        Spinner.css
         TextField.css
       navigation/
         Pane.css

@@ -22,7 +22,7 @@ const tabOptions = [
   { value: 'slider', label: 'Slider', icon: BsSliders },
   { value: 'button', label: 'Button', icon: BsCursor },
   { value: 'buttongroup', label: 'ButtonGroup', icon: BsGrid },
-  { value: 'spinner', label: 'Spinner', icon: BsArrowRepeat },
+  { value: 'progress', label: 'Progress', icon: BsArrowRepeat },
   { value: 'dialog', label: 'Dialog', icon: BsWindowStack },
   { value: 'notification', label: 'Notification', icon: BsBell },
   { value: 'tooltip', label: 'Tooltip', icon: BsChat },

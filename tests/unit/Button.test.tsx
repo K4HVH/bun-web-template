@@ -63,8 +63,8 @@ describe('Button', () => {
 
   it('shows loading state', () => {
     const { container } = render(() => <Button loading>Loading</Button>);
-    const spinner = container.querySelector('.spinner');
-    expect(spinner).toBeInTheDocument();
+    const progress = container.querySelector('.progress');
+    expect(progress).toBeInTheDocument();
   });
 
   it('renders icon-only button', () => {

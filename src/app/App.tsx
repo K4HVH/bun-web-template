@@ -13,7 +13,7 @@ import MultiSelectComboboxDemo from './pages/demos/MultiSelectComboboxDemo';
 import SliderDemo from './pages/demos/SliderDemo';
 import ButtonDemo from './pages/demos/ButtonDemo';
 import ButtonGroupDemo from './pages/demos/ButtonGroupDemo';
-import SpinnerDemo from './pages/demos/SpinnerDemo';
+import ProgressDemo from './pages/demos/ProgressDemo';
 import DialogDemo from './pages/demos/DialogDemo';
 import NotificationDemo from './pages/demos/NotificationDemo';
 import TooltipDemo from './pages/demos/TooltipDemo';
@@ -43,7 +43,7 @@ const App: Component = () => {
           <Route path="slider" component={SliderDemo} />
           <Route path="button" component={ButtonDemo} />
           <Route path="buttongroup" component={ButtonGroupDemo} />
-          <Route path="spinner" component={SpinnerDemo} />
+          <Route path="progress" component={ProgressDemo} />
           <Route path="dialog" component={DialogDemo} />
           <Route path="notification" component={NotificationDemo} />
           <Route path="tooltip" component={TooltipDemo} />

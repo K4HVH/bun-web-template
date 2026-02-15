@@ -50,13 +50,13 @@ src/
     App.tsx                 # Router setup with nested routes, wraps in NotificationProvider
     pages/
       Test.tsx              # Layout shell: sidebar Pane + Tabs nav, renders routed demo via children
-      demos/                # 22 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, etc.)
+      demos/                # 22 individual demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, etc.)
   components/
-    inputs/                 # Interactive form controls (8 components)
+    inputs/                 # Interactive form controls (7 components)
     surfaces/               # Layout and background (2 components)
     display/                # Data presentation (5 components)
-    feedback/               # User feedback (5 components)
-    navigation/             # Navigation patterns (4 components)
+    feedback/               # User feedback (6 components)
+    navigation/             # Navigation patterns (5 components)
   styles/
     global.css              # Theme tokens, resets, typography, utilities
     components/{category}/  # Per-component CSS files (mirror component tree)
@@ -64,7 +64,7 @@ src/
     cssVariables.ts         # getCSSVariable() / setCSSVariable() helpers
 tests/
   setup.ts                  # Imports @testing-library/jest-dom
-  unit/                     # Vitest unit tests (25 test files)
+  unit/                     # Vitest unit tests (26 test files)
   e2e/                      # Playwright e2e tests (10 spec files)
   .output/                  # Test reports and results (git-ignored)
 serve.ts                     # Native Bun static file server with SPA fallback
@@ -81,13 +81,12 @@ Components are organized into five categories:
 ```
 src/components/
   inputs/                    # Interactive form controls
-    Button.tsx               # Variants: primary, secondary, subtle, danger. Sizes: compact, normal, spacious. Supports icon + loading state (shows Spinner).
+    Button.tsx               # Variants: primary, secondary, subtle, danger. Sizes: compact, normal, spacious. Supports icon + loading state (shows circular Progress).
     ButtonGroup.tsx          # Groups buttons. Orientation: horizontal (default), vertical.
     Checkbox.tsx             # Supports label, indeterminate, icon mode (iconUnchecked/iconChecked).
     Combobox.tsx             # Dropdown select via Portal. Single or multi-select. Uses Checkbox internally for multi.
     RadioGroup.tsx           # Radio buttons with options array. Orientation: horizontal, vertical (default). Icon mode support.
     Slider.tsx               # Single/range slider. Marks, tooltips (Portal), orientation, step=null snaps to marks only.
-    Spinner.tsx              # Loading indicator. Sizes: sm, normal, lg.
     TextField.tsx            # Text input/textarea. Supports label, prefix/suffix, clearable, multiline with auto-grow, character count.
   surfaces/                  # Layout and background
     Card.tsx                 # Container. Variants: default, emphasized, subtle. Accent borders: primary, secondary, accent. Padding: compact, normal, spacious. Exports CardHeader.
@@ -103,8 +102,10 @@ src/components/
     FieldError.tsx           # Displays field validation error with icon. Conditionally renders based on error prop. Used standalone or within FormField.
     Form.tsx                 # Form wrapper component. Prevents default submit, supports async onSubmit handler. Works with useForm hook for validation and state management.
     FormField.tsx            # Form field container. Displays label, required asterisk, error message via FieldError. Wraps input controls with consistent layout.
-    Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (default), top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
+    Notification.tsx         # Toast notification system. Context-based: NotificationProvider + useNotification(). Variants: success, error, warning, info. Positions: top-right (top-center, bottom-right, bottom-center. Auto-dismiss with configurable duration.
+    Progress.tsx             # Progress indicator. Types: linear (bar), circular (radial). Modes: determinate (0-100%), indeterminate (loading animation). Variants: primary, success, warning, error. Sizes: sm, normal, lg. Optional showLabel for percentage display.
   navigation/                # Navigation patterns
+    Breadcrumbs.tsx          # Breadcrumb navigation. Separator customization, max items with collapse, icon support.
     Menu.tsx                 # Dropdown/context menu via Portal. Triggers: click, contextmenu, both. Auto-positioning with flip. Anchored (follows trigger on scroll) or unanchored. Variants: default, emphasized, subtle. Sizes: compact, normal, spacious. Supports nested submenus with hover. Exports MenuItem, MenuSeparator.
     Pagination.tsx           # Page navigation control. Controlled via page/onPageChange. Variants: primary, secondary, subtle. Sizes: compact, normal, spacious. Features: page numbers with ellipsis, first/last buttons (toggleable), prev/next buttons (toggleable), configurable siblingCount for page density.
     Pane.tsx                 # Collapsible side/top/bottom panel. States: closed, partial, open. Modes: permanent (push, with handle) or temporary (overlay, with backdrop). Controlled or uncontrolled. Position: left (default), right, top, bottom.

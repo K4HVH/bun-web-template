@@ -1,5 +1,5 @@
 import { Component, JSX, splitProps, Show } from 'solid-js';
-import { Spinner } from '../feedback/Spinner';
+import { Progress } from '../feedback/Progress';
 import '../../styles/components/inputs/Button.css';
 
 interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,8 +28,8 @@ export const Button: Component<ButtonProps> = (props) => {
   const iconPosition = () => local.iconPosition ?? 'left';
   const isIconOnly = () => local.icon && !local.children;
 
-  const spinnerSize = () => {
-    // Icon-only buttons need larger spinner to match icon size
+  const progressSize = () => {
+    // Icon-only buttons need larger progress indicator to match icon size
     if (isIconOnly()) return 'lg';
     if (size() === 'compact') return 'sm';
     if (size() === 'spacious') return 'lg';
@@ -67,7 +67,7 @@ export const Button: Component<ButtonProps> = (props) => {
       {...rest}
     >
       <Show when={local.loading}>
-        <Spinner size={spinnerSize()} />
+        <Progress type="circular" size={progressSize()} />
       </Show>
       <Show when={local.icon && iconPosition() === 'left' && !local.loading}>
         <span class="button__icon">

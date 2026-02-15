@@ -1,0 +1,194 @@
+/* =============================================================================
+   Progress Component
+   ============================================================================= */
+
+.progress {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--g-spacing-sm);
+}
+
+/* =============================================================================
+   Linear Progress
+   ============================================================================= */
+
+.progress--linear {
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--g-spacing-xs);
+}
+
+.progress__track {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background-color: var(--g-border-color);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--progress-color-start), var(--progress-color-end));
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal) ease;
+}
+
+/* Linear indeterminate animation */
+.progress--linear.progress--indeterminate .progress__fill {
+  width: 40%;
+  animation: progress-linear-indeterminate 1.5s ease-in-out infinite;
+}
+
+@keyframes progress-linear-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(250%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* =============================================================================
+   Circular Progress
+   ============================================================================= */
+
+.progress--circular {
+  width: 16px;
+  height: 16px;
+}
+
+.progress__svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from top */
+  transform-origin: center;
+}
+
+.progress__circle-bg {
+  stroke: var(--g-border-color);
+  opacity: 0.3;
+}
+
+.progress__circle {
+  stroke: var(--progress-color-end);
+  transition: stroke-dashoffset var(--transition-normal) ease;
+}
+
+/* Circular indeterminate animation - simple continuous rotation */
+.progress--circular.progress--indeterminate .progress__svg {
+  animation: progress-spin 1s linear infinite;
+}
+
+.progress--circular.progress--indeterminate .progress__circle {
+  stroke-dasharray: 75, 200;
+  stroke-dashoffset: -10;
+}
+
+@keyframes progress-spin {
+  0% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+/* =============================================================================
+   Labels
+   ============================================================================= */
+
+.progress__label {
+  font-size: var(--font-size-sm);
+  color: var(--g-text-secondary);
+  white-space: nowrap;
+}
+
+.progress__label--circular {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--g-text-primary);
+  line-height: 1;
+}
+
+/* =============================================================================
+   Size Variants
+   ============================================================================= */
+
+/* Small */
+.progress--sm.progress--circular {
+  width: 12px;
+  height: 12px;
+}
+
+.progress--sm.progress--linear .progress__track {
+  height: 4px;
+}
+
+.progress--sm .progress__label--circular {
+  font-size: 6px;
+}
+
+/* Large */
+.progress--lg.progress--circular {
+  width: 20px;
+  height: 20px;
+}
+
+/* Circular with label - keep size same, just use tiny text */
+.progress--circular.progress--with-label .progress__label--circular {
+  font-size: 6px;
+}
+
+.progress--sm.progress--circular.progress--with-label .progress__label--circular {
+  font-size: 5px;
+}
+
+.progress--lg.progress--circular.progress--with-label .progress__label--circular {
+  font-size: 7px;
+}
+
+.progress--lg.progress--linear .progress__track {
+  height: 12px;
+}
+
+.progress--lg .progress__label--circular {
+  font-size: var(--font-size-xs);
+}
+
+/* =============================================================================
+   Color Variants
+   ============================================================================= */
+
+/* Primary (default) */
+.progress--primary {
+  --progress-color-start: var(--color-blue-600);
+  --progress-color-end: var(--color-blue-500);
+}
+
+/* Success */
+.progress--success {
+  --progress-color-start: var(--color-green-600);
+  --progress-color-end: var(--color-green-500);
+}
+
+/* Warning */
+.progress--warning {
+  --progress-color-start: var(--color-yellow-600);
+  --progress-color-end: var(--color-yellow-500);
+}
+
+/* Error */
+.progress--error {
+  --progress-color-start: var(--color-red-700);
+  --progress-color-end: var(--color-red-600);
+}

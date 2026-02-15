@@ -45,7 +45,6 @@ Interactive form controls and user input components.
 | **Combobox** | Dropdown select with Portal rendering (single and multi-select) |
 | **RadioGroup** | Radio button groups with horizontal/vertical layout |
 | **Slider** | Single and range sliders with marks and tooltips |
-| **Spinner** | Loading indicators |
 | **TextField** | Text input field |
 
 ### Display
@@ -71,6 +70,7 @@ User feedback and dialog components.
 | **Form** | Form wrapper with validation and submit handling |
 | **FormField** | Form field container with label and error display |
 | **Notification** | Toast notifications with provider context |
+| **Progress** | Linear and circular progress indicators with determinate/indeterminate modes |
 
 ### Surfaces
 
@@ -103,11 +103,11 @@ src/
 │   ├── App.tsx                 # Router setup with nested routes, NotificationProvider
 │   └── pages/
 │       ├── Test.tsx            # Layout shell: sidebar Pane + Tabs nav
-│       └── demos/              # 22 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, etc.)
+│       └── demos/              # 22 demo files (TypographyDemo.tsx, ButtonDemo.tsx, TableDemo.tsx, MenuDemo.tsx, FormDemo.tsx, BreadcrumbsDemo.tsx, ProgressDemo.tsx, etc.)
 ├── components/
 │   ├── inputs/                 # Button, Checkbox, Combobox, Slider, etc.
 │   ├── display/                # Avatar, Badge, Tooltip, etc.
-│   ├── feedback/               # Dialog, FieldError, Form, FormField, Notification
+│   ├── feedback/               # Dialog, FieldError, Form, FormField, Notification, Progress
 │   ├── surfaces/               # Card, GridBackground
 │   └── navigation/             # Breadcrumbs, Menu, Pagination, Pane, Tabs
 ├── styles/
